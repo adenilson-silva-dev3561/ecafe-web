@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes do produto — eCafe</title>
+
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+    <link rel="stylesheet" href="../../assets/css/product-details.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+
+  <body class="product-details-page">
+    <header>
+      <div class="top-bar">
+        <div class="container top-bar-content">
+          <div class="top-left">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Frete grátis para compras acima de R$199,00</span>
+          </div>
+          <div class="top-right">
+            <a href="#">
+              <i class="fa-solid fa-headset"></i>
+              Atendimento
+            </a>
+            <a
+              href="https://wa.me/553332215867"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="fa-brands fa-whatsapp"></i>
+              (33) 3221-5867
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-nav">
+        <div class="container nav-inner">
+          <a href="../home/index.html" class="logo" aria-label="Logo eCafe">
+            <img
+              src="../../assets/images/logo.png"
+              alt="Logo eCafe"
+              class="logo-img"
+            />
+          </a>
+
+          <nav class="nav-links">
+            <a href="../home/index.html">Início</a>
+            <a href="index.html">
+              Produtos
+              <i class="fa-solid fa-chevron-down"></i>
+            </a>
+            <a href="../categories/index.html">
+              Categorias
+              <i class="fa-solid fa-chevron-down"></i>
+            </a>
+            <a href="#">Sobre nós</a>
+            <a href="#">Contato</a>
+          </nav>
+
+          <div class="nav-actions">
+            <div class="search">
+              <input type="text" placeholder="Buscar produtos..." />
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            </div>
+            <a href="../../login.html" class="login">
+              <i class="fa-regular fa-user"></i>
+              <span>Entrar</span>
+            </a>
+            <a href="../cart.html" class="cart" aria-label="Carrinho">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span class="badge" hidden>0</span>
+            </a>
+            <button class="hamburger" type="button" aria-label="Abrir menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <nav class="product-breadcrumb" aria-label="Breadcrumb">
+          <ol id="product-breadcrumb">
+            <li><a href="../home/index.html">Início</a></li>
+            <li><a href="index.html">Produtos</a></li>
+          </ol>
+        </nav>
+
+        <section id="product-state-loading" class="product-state" hidden>
+          <div class="product-loading-spinner" aria-hidden="true"></div>
+          <h2>Carregando produto...</h2>
+        </section>
+
+        <section id="product-state-error" class="product-state" hidden>
+          <h2>Não foi possível carregar o produto.</h2>
+          <p>Tente novamente em alguns instantes.</p>
+          <button type="button" class="btn-primary-action" id="retry-load-btn">
+            Tentar novamente
+          </button>
+        </section>
+
+        <section id="product-state-not-found" class="product-state" hidden>
+          <h2>Produto não encontrado.</h2>
+          <p>O item que você procura não está disponível.</p>
+          <a href="index.html" class="btn-outline">Voltar para produtos</a>
+        </section>
+
+        <div id="product-content" hidden>
+          <section class="product-details-main">
+            <div class="product-gallery">
+              <div class="product-gallery-main">
+                <img
+                  id="product-main-image"
+                  src=""
+                  alt=""
+                  class="product-gallery-image"
+                />
+                <button
+                  type="button"
+                  class="product-gallery-fav"
+                  id="product-fav-btn"
+                  aria-label="Adicionar aos favoritos"
+                >
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+              </div>
+              <div class="product-gallery-thumbs" id="product-thumbs"></div>
+            </div>
+
+            <div class="product-details-info">
+              <p class="product-details-category" id="product-category"></p>
+              <h1 class="product-details-title" id="product-title"></h1>
+
+              <div class="product-details-rating" id="product-rating"></div>
+
+              <p class="product-details-price" id="product-price"></p>
+              <p
+                class="product-details-description"
+                id="product-short-description"
+              ></p>
+
+              <div class="product-quantity-block">
+                <span class="product-quantity-label">Quantidade</span>
+                <div
+                  class="product-preset-grid"
+                  id="product-presets"
+                  hidden
+                ></div>
+
+                <div class="product-custom-quantity">
+                  <span
+                    class="product-custom-quantity-label"
+                    id="custom-qty-label"
+                  >
+                    Quantidade personalizada
+                  </span>
+                  <div class="product-quantity-control">
+                    <button
+                      type="button"
+                      class="product-qty-btn"
+                      id="qty-minus"
+                      aria-label="Diminuir quantidade"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="text"
+                      class="product-qty-input"
+                      id="qty-input"
+                      inputmode="decimal"
+                      aria-label="Quantidade"
+                    />
+                    <button
+                      type="button"
+                      class="product-qty-btn"
+                      id="qty-plus"
+                      aria-label="Aumentar quantidade"
+                    >
+                      +
+                    </button>
+                    <span class="product-qty-unit" id="qty-unit"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="product-total-box">
+                <div class="product-total-label">
+                  <strong>Total</strong>
+                  <span id="product-qty-summary"></span>
+                </div>
+                <span class="product-total-value" id="product-total"></span>
+              </div>
+
+              <button
+                type="button"
+                class="btn-primary-action"
+                id="add-to-cart-btn"
+              >
+                <i class="fa-solid fa-cart-shopping"></i>
+                Adicionar ao carrinho
+              </button>
+
+              <div class="product-trust-badges">
+                <div class="product-trust-badge">
+                  <i class="fa-solid fa-weight-scale"></i>
+                  <span id="product-packaging-badge">Produto a granel</span>
+                </div>
+                <div class="product-trust-badge">
+                  <i class="fa-solid fa-leaf"></i>
+                  <span>Produtos selecionados</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section
+            class="product-payment-section"
+            aria-label="Formas de pagamento"
+          >
+            <h2 class="product-section-title">Formas de pagamento</h2>
+            <div class="product-payment-grid">
+              <div class="product-payment-item">
+                <i class="fa-brands fa-pix"></i>
+                <strong>PIX</strong>
+                <span>Aprovação imediata</span>
+              </div>
+              <div class="product-payment-item">
+                <i class="fa-regular fa-credit-card"></i>
+                <strong>Cartão de crédito</strong>
+                <span>Até 12x</span>
+              </div>
+              <div class="product-payment-item">
+                <i class="fa-solid fa-credit-card"></i>
+                <strong>Cartão de débito</strong>
+                <span>Débito online</span>
+              </div>
+              <div class="product-payment-item">
+                <i class="fa-solid fa-barcode"></i>
+                <strong>Boleto</strong>
+                <span>Vencimento em 3 dias</span>
+              </div>
+              <div class="product-payment-item">
+                <i class="fa-solid fa-wallet"></i>
+                <strong>Carteiras digitais</strong>
+                <span>Pagamento rápido</span>
+              </div>
+            </div>
+
+            <div class="product-security-bar">
+              <div class="product-security-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                  <strong>Ambiente 100% seguro</strong>
+                  <span>Seus dados protegidos com segurança.</span>
+                </div>
+              </div>
+              <div class="product-security-item">
+                <i class="fa-solid fa-lock"></i>
+                <div>
+                  <strong>Compra segura</strong>
+                  <span>Pagamento processado com segurança.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="product-details-bottom">
+            <div>
+              <h2 class="product-section-title">Descrição do produto</h2>
+              <p class="product-description-text" id="product-description"></p>
+              <ul class="product-features-list" id="product-features"></ul>
+            </div>
+            <div>
+              <h2 class="product-section-title">Informações do produto</h2>
+              <ul class="product-spec-list" id="product-specs"></ul>
+            </div>
+          </section>
+
+          <section
+            class="product-related-section"
+            aria-label="Produtos relacionados"
+          >
+            <h2 class="product-section-title">Produtos que combinam</h2>
+            <div
+              class="product-related-grid products-row"
+              id="related-products"
+            ></div>
+          </section>
+        </div>
+      </div>
+
+      <footer
+        id="product-page-footer"
+        class="site-footer"
+        aria-label="Rodapé eCafe"
+        hidden
+      >
+        <div class="footer-inner">
+          <div class="footer-col footer-brand-col">
+            <div class="footer-brand">
+              <img
+                src="../../assets/images/footer-logo.png"
+                alt="Logo eCafe"
+                class="footer-logo-img"
+              />
+              <span class="footer-logo-text">eCafe</span>
+            </div>
+            <p class="footer-slogan">Sabor que inspira</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 eCafe. Todos os direitos reservados.</p>
+        </div>
+      </footer>
+    </main>
+
+    <div class="cart-toast" id="cart-toast" role="status" aria-live="polite">
+      <i class="fa-solid fa-circle-check"></i>
+      <span>Produto adicionado ao carrinho ✓</span>
+    </div>
+
+    <script src="../../assets/js/header.js"></script>
+    <script
+      type="module"
+      src="../../assets/js/pages/product-details.js"
+    ></script>
+  </body>
+</html>

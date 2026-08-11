@@ -1,14 +1,783 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>eCafe - Home</title>
+
+    <title>eCafe - Loja de Cafés</title>
+
     <link rel="stylesheet" href="../../assets/css/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
   </head>
+
   <body>
+    <!-- ================= TOP BAR ================= -->
+
+    <header>
+      <div class="top-bar">
+        <div class="container top-bar-content">
+          <div class="top-left">
+            <i class="fa-solid fa-truck-fast"></i>
+
+            <span> Frete grátis para compras acima de R$199,00 </span>
+          </div>
+
+          <div class="top-right">
+            <a href="#">
+              <i class="fa-solid fa-headset"></i>
+
+              Atendimento
+            </a>
+
+            <a
+              href="https://wa.me/553332215867"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="fa-brands fa-whatsapp"></i>
+
+              (33) 3221-5867
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= NAVBAR ================= -->
+
+      <div class="main-nav">
+        <div class="container nav-inner">
+          <!-- Logo -->
+
+          <a href="../../index.html" class="logo" aria-label="Logo eCafe">
+            <img
+              src="../../assets/images/logo.png"
+              alt="Logo eCafe"
+              class="logo-img"
+            />
+          </a>
+
+          <!-- Menu -->
+
+          <nav class="nav-links">
+            <a href="index.html"> Início </a>
+
+            <a href="#">
+              Produtos
+              <i class="fa-solid fa-chevron-down"></i>
+            </a>
+
+            <a href="#">
+              Categorias
+              <i class="fa-solid fa-chevron-down"></i>
+            </a>
+
+            <a href="#"> Sobre nós </a>
+
+            <a href="#"> Contato </a>
+          </nav>
+
+          <!-- Ações -->
+
+          <div class="nav-actions">
+            <!-- Busca -->
+
+            <div class="search">
+              <input type="text" placeholder="Buscar produtos..." />
+
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            </div>
+
+            <!-- Login -->
+
+            <a href="login.html" class="login">
+              <i class="fa-regular fa-user"></i>
+
+              <span> Entrar </span>
+            </a>
+
+            <!-- Carrinho -->
+
+            <a href="../cart.html" class="cart" aria-label="Carrinho">
+              <i class="fa-solid fa-cart-shopping"></i>
+
+              <span class="badge" hidden>0</span>
+            </a>
+
+            <!-- Mobile -->
+
+            <button class="hamburger">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= HERO ================= -->
+
     <main>
-      <h1>Home Page</h1>
+      <section class="carousel-section">
+        <div class="carousel-wrap">
+          <div class="carousel" aria-label="Carrossel de destaques">
+            <div class="carousel-track">
+              <div class="carousel-slide">
+                <img
+                  class="carousel-image"
+                  src="../../assets/images/banner-1.png"
+                  alt="Banner promocional eCafe 1"
+                />
+                <a href="#produtos" class="carousel-cta"
+                  >Ver produtos <span class="carousel-cta-arrow">→</span></a
+                >
+              </div>
+              <div class="carousel-slide">
+                <img
+                  class="carousel-image"
+                  src="../../assets/images/banner-2.png"
+                  alt="Banner promocional eCafe 2"
+                />
+                <a href="#produtos" class="carousel-cta"
+                  >Ver produtos <span class="carousel-cta-arrow">→</span></a
+                >
+              </div>
+              <div class="carousel-slide">
+                <img
+                  class="carousel-image"
+                  src="../../assets/images/banner-3.png"
+                  alt="Banner promocional eCafe 3"
+                />
+                <a href="#produtos" class="carousel-cta"
+                  >Ver produtos <span class="carousel-cta-arrow">→</span></a
+                >
+              </div>
+            </div>
+
+            <button class="carousel-control prev" aria-label="Slide anterior">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="carousel-control next" aria-label="Próximo slide">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            <div class="carousel-dots" role="tablist">
+              <button
+                class="carousel-dot active"
+                data-index="0"
+                aria-label="Slide 1"
+              ></button>
+              <button
+                class="carousel-dot"
+                data-index="1"
+                aria-label="Slide 2"
+              ></button>
+              <button
+                class="carousel-dot"
+                data-index="2"
+                aria-label="Slide 3"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="categories-section">
+        <div class="categories-container">
+          <div class="categories-header">
+            <p class="categories-subtitle">Nossas categorias</p>
+            <h2 class="categories-title">Categorias</h2>
+          </div>
+
+          <div class="categories-carousel-wrap">
+            <button
+              class="categories-nav prev"
+              aria-label="Categoria anterior"
+              disabled
+            >
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div
+              class="categories-carousel"
+              aria-label="Carrossel de categorias"
+            >
+              <div class="categories-track">
+                <!-- Cafés -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catCafe.png"
+                    alt="Categoria Cafés - cafés especiais em grãos e moídos"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Cafés</h3>
+                </article>
+
+                <!-- Grãos -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catGraos.png"
+                    alt="Categoria Grãos - grãos selecionados e produtos naturais"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Grãos</h3>
+                </article>
+
+                <!-- Oleaginosas -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catOleaginosas.png"
+                    alt="Categoria Oleaginosas - castanhas, amendoins e nozes"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Oleaginosas</h3>
+                </article>
+
+                <!-- Doces -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catDoces.png"
+                    alt="Categoria Doces - paçocas, rapaduras e doces artesanais"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Doces</h3>
+                </article>
+
+                <!-- Temperos -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catTemperos.png"
+                    alt="Categoria Temperos - alho, colorau, páprica e especiarias"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Temperos</h3>
+                </article>
+
+                <!-- Farinhas -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catFarinhas.png"
+                    alt="Categoria Farinhas - farinha de mandioca, milho e trigo"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Farinhas</h3>
+                </article>
+
+                <!-- Mercearia -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catDiversos.png"
+                    alt="Categoria Mercearia - produtos alimentícios variados"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Mercearia</h3>
+                </article>
+
+                <!-- Kits -->
+                <article class="category-card">
+                  <img
+                    src="../../assets/images/catCestas.png"
+                    alt="Categoria Cestas - cestas presenteáveis especiais"
+                    class="category-image"
+                  />
+                  <h3 class="category-title">Cestas</h3>
+                </article>
+              </div>
+            </div>
+
+            <button class="categories-nav next" aria-label="Próxima categoria">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Produtos em destaque (inserida abaixo de Categorias) -->
+      <section id="produtos" class="featured-products-section">
+        <div class="container">
+          <div class="featured-products">
+            <p class="featured-subtitle">PRODUTOS EM DESTAQUE</p>
+            <h2 class="featured-title">Os mais vendidos</h2>
+
+            <div class="products-row" aria-label="Produtos em destaque">
+              <article class="product-card" data-product-id="1">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catCafe.png"
+                  alt="Café 100% Arábica"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Café 100% Arábica</p>
+                  <p class="product-weight">500g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 24,90</span>
+                    <button class="btn-add" type="button">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="2">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catGraos.png"
+                  alt="Café Especial"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Café Especial</p>
+                  <p class="product-weight">500g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 32,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="3">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catCafe.png"
+                  alt="Café Tradicional"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Café Tradicional</p>
+                  <p class="product-weight">500g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 18,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="4">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catDoces.png"
+                  alt="Paçoca Rolha"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Paçoca Rolha</p>
+                  <p class="product-weight">300g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 12,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="5">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catOleaginosas.png"
+                  alt="Amendoim Torrado"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Amendoim Torrado</p>
+                  <p class="product-weight">500g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 9,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="6">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catFarinhas.png"
+                  alt="Kit Doces Finos"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Kit Doces Finos</p>
+                  <p class="product-weight">400g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 42,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="7">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catTemperos.png"
+                  alt="Páprica Doce"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Páprica Doce</p>
+                  <p class="product-weight">250g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 8,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="8">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catGraos.png"
+                  alt="Mix de Grãos"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Mix de Grãos</p>
+                  <p class="product-weight">500g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 14,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="9">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catDoces.png"
+                  alt="Rapadura Artesanal"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Rapadura Artesanal</p>
+                  <p class="product-weight">350g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 7,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="10">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catOleaginosas.png"
+                  alt="Castanha de Caju"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Castanha de Caju</p>
+                  <p class="product-weight">300g</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 19,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="11">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catFarinhas.png"
+                  alt="Farinha de Mandioca"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Farinha de Mandioca</p>
+                  <p class="product-weight">1kg</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 6,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="product-card" data-product-id="12">
+                <button class="fav-btn" aria-label="Favoritar" type="button">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <img
+                  src="../../assets/images/catCestas.png"
+                  alt="Cesta Premium eCafe"
+                  class="product-image"
+                />
+                <div class="product-info">
+                  <p class="product-name">Cesta Premium eCafe</p>
+                  <p class="product-weight">1 unidade</p>
+                  <div class="product-buy">
+                    <span class="product-price">R$ 89,90</span>
+                    <button class="btn-add">
+                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ================= BENEFÍCIOS (faixa) ================= -->
+      <section class="benefits-section" aria-label="Benefícios">
+        <div class="benefits-container">
+          <div class="benefits-row">
+            <div class="benefit">
+              <svg
+                class="benefit-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <path d="M16 8h4l3 3v5"></path>
+                <circle cx="5.5" cy="18.5" r="1.5"></circle>
+                <circle cx="18.5" cy="18.5" r="1.5"></circle>
+              </svg>
+              <div class="benefit-text">
+                <div class="benefit-title">Entrega rápida</div>
+                <div class="benefit-desc">Para todo o Brasil</div>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <svg
+                class="benefit-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2l7 4v5c0 5-3.6 9.9-7 11-3.4-1.1-7-6-7-11V6l7-4z"
+                ></path>
+                <path d="M9 12l2 2 4-4"></path>
+              </svg>
+              <div class="benefit-text">
+                <div class="benefit-title">Pagamento seguro</div>
+                <div class="benefit-desc">Ambiente 100% seguro</div>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <svg
+                class="benefit-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"></path>
+                <path d="M12 6v6"></path>
+              </svg>
+              <div class="benefit-text">
+                <div class="benefit-title">Produtos selecionados</div>
+                <div class="benefit-desc">Qualidade garantida</div>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <svg
+                class="benefit-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 18v-4a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2z"></path>
+                <path d="M3 16v2a2 2 0 0 0 2 2h1v-6H5a2 2 0 0 0-2 2z"></path>
+              </svg>
+              <div class="benefit-text">
+                <div class="benefit-title">Atendimento</div>
+                <div class="benefit-desc">Suporte humanizado</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FOOTER ================= -->
+      <footer class="site-footer" aria-label="Rodapé eCafe">
+        <div class="footer-inner">
+          <div class="footer-col footer-brand-col">
+            <div class="footer-brand">
+              <img
+                src="../../assets/images/footer-logo.png"
+                alt="Logo eCafe"
+                class="footer-logo-img"
+              />
+              <span class="footer-logo-text">eCafe</span>
+            </div>
+            <p class="footer-slogan">Sabor que inspira</p>
+            <p class="footer-copy">
+              A eCafe nasceu da paixão pelos melhores cafés, oferecendo
+              qualidade, aroma e experiências únicas para cada cliente.
+            </p>
+            <div class="footer-socials" aria-label="Redes sociais eCafe">
+              <a
+                href="https://www.instagram.com/varejao_popular_ecafe/"
+                class="social-link"
+                aria-label="Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fa-brands fa-instagram"></i
+              ></a>
+              <a
+                href="https://www.facebook.com/ecafevarejaopopularecafe/"
+                class="social-link"
+                aria-label="Facebook"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fa-brands fa-facebook-f"></i
+              ></a>
+              <a
+                href="https://wa.me/553332215867"
+                class="social-link"
+                aria-label="WhatsApp"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fa-brands fa-whatsapp"></i
+              ></a>
+              <a
+                href="mailto:contato@ecafe.com.br"
+                class="social-link"
+                aria-label="Email"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fa-regular fa-envelope"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h3 class="footer-title">Institucional</h3>
+            <ul class="footer-list">
+              <li><a href="#">Sobre nós</a></li>
+              <li><a href="#">Política de Privacidade</a></li>
+              <li><a href="#">Trocas e Devoluções</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+              <li><a href="#">Trabalhe Conosco</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3 class="footer-title">Ajuda</h3>
+            <ul class="footer-list">
+              <li><a href="#">Como comprar</a></li>
+              <li><a href="#">Formas de pagamento</a></li>
+              <li><a href="#">Prazo de entrega</a></li>
+              <li><a href="#">Rastreamento</a></li>
+              <li><a href="#">Perguntas frequentes</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col footer-contact-col">
+            <h3 class="footer-title">Contato</h3>
+            <ul class="footer-contact">
+              <li>
+                <span class="contact-icon">📞</span
+                ><a
+                  href="tel:+553332215867"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >(33) 3221-5867</a
+                >
+              </li>
+              <li>
+                <span class="contact-icon">✉</span
+                ><a
+                  href="mailto:contato@ecafe.com.br"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >contato@ecafe.com.br</a
+                >
+              </li>
+              <li>
+                <span class="contact-icon">📍</span
+                ><span
+                  >Mercado Municipal - R. Bárbara Heliodora, Lj 61 - Centro,
+                  Gov. Valadares - MG, 35010-131</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 eCafe. Todos os direitos reservados.</p>
+          <div class="footer-payments" aria-label="Formas de pagamento">
+            <img
+              src="../../assets/images/cartoes-footer.png"
+              alt="Formas de pagamento aceitas"
+              class="footer-payments-img"
+            />
+          </div>
+        </div>
+      </footer>
     </main>
+
+    <script src="../../assets/js/header.js"></script>
+    <script src="../../assets/js/main.js"></script>
   </body>
 </html>

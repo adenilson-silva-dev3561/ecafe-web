@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu carrinho — eCafe</title>
+
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/cart.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body class="cart-page">
+    <header>
+      <div class="top-bar">
+        <div class="container top-bar-content">
+          <div class="top-left">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Frete grátis para compras acima de R$199,00</span>
+          </div>
+          <div class="top-right">
+            <a href="#">
+              <i class="fa-solid fa-headset"></i>
+              Atendimento
+            </a>
+            <a
+              href="https://wa.me/553332215867"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="fa-brands fa-whatsapp"></i>
+              (33) 3221-5867
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-nav">
+        <div class="container nav-inner">
+          <a href="../index.html" class="logo" aria-label="Logo eCafe">
+            <img
+              src="../assets/images/logo.png"
+              alt="Logo eCafe"
+              class="logo-img"
+            />
+          </a>
+
+          <nav class="nav-links">
+            <a href="../index.html">Início</a>
+            <a href="../pages/products/index.html">Produtos</a>
+            <a href="#">Categorias</a>
+            <a href="#">Sobre nós</a>
+            <a href="#">Contato</a>
+          </nav>
+
+          <div class="nav-actions">
+            <div class="search">
+              <input type="text" placeholder="Buscar produtos..." />
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            </div>
+            <a href="../login.html" class="login">
+              <i class="fa-regular fa-user"></i>
+              <span>Entrar</span>
+            </a>
+            <a href="cart.html" class="cart" aria-label="Carrinho">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span class="badge" hidden>0</span>
+            </a>
+            <button class="hamburger" type="button" aria-label="Abrir menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container cart-main">
+      <nav class="cart-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../index.html">Início</a></li>
+          <li aria-current="page">Carrinho</li>
+        </ol>
+      </nav>
+
+      <section class="cart-layout">
+        <div class="cart-items-panel">
+          <h1 class="cart-title">Meu carrinho</h1>
+
+          <div id="cart-empty-state" class="cart-empty-state" hidden>
+            <div class="empty-icon">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <h2>Seu carrinho está vazio</h2>
+            <p>Você ainda não adicionou produtos ao seu carrinho.</p>
+            <a href="../index.html" class="btn-primary-action"
+              >Começar a comprar</a
+            >
+          </div>
+
+          <div id="cart-items" class="cart-items"></div>
+
+          <div class="cart-actions-row">
+            <a href="../index.html" class="btn-secondary"
+              >← Continuar comprando</a
+            >
+            <button type="button" id="clear-cart-btn" class="btn-link-danger">
+              <i class="fa-solid fa-trash-can"></i>
+              Limpar carrinho
+            </button>
+          </div>
+        </div>
+
+        <aside class="cart-summary">
+          <h2>Resumo do pedido</h2>
+
+          <div class="summary-row">
+            <span id="summary-subtotal-label">Subtotal (0 itens)</span>
+            <strong id="summary-subtotal">R$ 0,00</strong>
+          </div>
+
+          <div class="summary-row freight-row">
+            <span>Frete</span>
+            <strong id="summary-freight">Grátis</strong>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row total-row">
+            <span>Total</span>
+            <strong id="summary-total">R$ 0,00</strong>
+          </div>
+
+          <div id="freight-progress" class="freight-progress">
+            <span id="freight-message"
+              >Faltam R$ 199,00 para ganhar frete grátis</span
+            >
+          </div>
+
+          <button type="button" class="btn-checkout" id="checkout-btn">
+            <i class="fa-solid fa-lock"></i>
+            Finalizar compra
+          </button>
+
+          <div class="payment-box">
+            <h3>Formas de pagamento</h3>
+            <div class="payment-icons">
+              <span><i class="fa-brands fa-pix"></i> PIX</span>
+              <span><i class="fa-regular fa-credit-card"></i> Crédito</span>
+              <span><i class="fa-solid fa-credit-card"></i> Débito</span>
+              <span><i class="fa-solid fa-barcode"></i> Boleto</span>
+              <span><i class="fa-solid fa-wallet"></i> Wallet</span>
+            </div>
+          </div>
+
+          <div class="security-box">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+              <strong>Compra segura</strong>
+              <span
+                >Seus dados serão protegidos durante o processo de compra.</span
+              >
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Rodapé eCafe">
+      <div class="footer-inner">
+        <div class="footer-col footer-brand-col">
+          <div class="footer-brand">
+            <img
+              src="../assets/images/footer-logo.png"
+              alt="Logo eCafe"
+              class="footer-logo-img"
+            />
+            <span class="footer-logo-text">eCafe</span>
+          </div>
+          <p class="footer-slogan">Sabor que inspira</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 eCafe. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+
+    <script src="../assets/js/header.js"></script>
+    <script type="module" src="../assets/js/pages/cart.js"></script>
+  </body>
+</html>

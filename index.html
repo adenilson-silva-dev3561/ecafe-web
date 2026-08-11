@@ -1,19 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="eCafe web application" />
     <title>eCafe</title>
+
+    <!-- Fonts & Icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
+    <!-- Header (desktop + mobile) -->
+    <header class="site-header">
+      <div class="topbar">
+        <div class="container topbar-inner">
+          <div class="topbar-left">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Frete grátis para compras acima de R$199,00</span>
+          </div>
+          <div class="topbar-right">
+            <div class="topbar-item">
+              <i class="fa-solid fa-headset"></i>
+              <span>Atendimento</span>
+            </div>
+            <div class="topbar-item">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span>(34) 99999-9999</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-nav">
+        <div class="container nav-inner">
+          <a class="logo" href="index.html" aria-label="Logo eCafe">
+            <img
+              class="logo-img"
+              src="/assets/images/logo.png"
+              alt="Logo eCafe"
+            />
+          </a>
+
+          <nav class="nav-links" role="navigation" aria-label="Main menu">
+            <a class="nav-item" href="index.html">Início</a>
+            <a class="nav-item" href="#"
+              >Produtos <i class="fa-solid fa-chevron-down"></i
+            ></a>
+            <a class="nav-item" href="#"
+              >Categorias <i class="fa-solid fa-chevron-down"></i
+            ></a>
+            <a class="nav-item" href="#">Sobre nós</a>
+            <a class="nav-item" href="#">Contatos</a>
+          </nav>
+
+          <div class="nav-actions">
+            <div class="search">
+              <input
+                type="search"
+                placeholder="Buscar produtos..."
+                aria-label="Buscar produtos"
+              />
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            </div>
+
+            <a class="action action-login" href="login.html">
+              <i class="fa-regular fa-user"></i>
+              <span>Entrar</span>
+            </a>
+
+            <a
+              class="action action-cart cart"
+              href="pages/cart.html"
+              aria-label="Carrinho"
+            >
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span class="badge cart-count">0</span>
+            </a>
+
+            <button class="hamburger" aria-label="Abrir menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
     <main>
-      <h1>Welcome to eCafe</h1>
-      <p>Frontend structure ready for future integrations.</p>
-      <a href="login.html">Go to login</a>
+      <section style="padding: 2rem">
+        <h1>Welcome to eCafe</h1>
+        <p>Frontend structure ready for future integrations.</p>
+        <a href="login.html">Go to login</a>
+      </section>
     </main>
 
+    <script>
+      window.location.replace("./pages/home/index.html");
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0; url=./pages/home/index.html" />
+    </noscript>
+    <script src="assets/js/header.js"></script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>
