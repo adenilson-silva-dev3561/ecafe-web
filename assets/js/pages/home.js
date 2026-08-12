@@ -2,6 +2,7 @@ import { getAllCategories } from "../../../services/categoryService.js";
 import {
   getAllProducts,
   getProductsByCategoryId,
+  searchProductsByName,
 } from "../../../services/productService.js";
 import { renderProductCard } from "../utils/productCard.js";
 import { addToCart, updateCartBadge } from "../../../services/cartService.js";
@@ -16,9 +17,11 @@ const ELEMENT_IDS = {
   categoriesError: "categories-error",
   featuredTitle: "featured-title",
   clearFilter: "featured-clear-filter",
+  searchInput: "product-search",
 };
 
 const FEATURED_LIMIT = 12;
+const SEARCH_DEBOUNCE_MS = 300;
 const DEFAULT_ADD_QUANTITY = 1;
 const DEFAULT_WEIGHT_ADD_QUANTITY = 0.5;
 
@@ -35,10 +38,14 @@ const CATEGORY_IMAGES = {
 
 let selectedCategoryId = null;
 let selectedCategoryName = null;
+let searchQuery = "";
+let productsRequestId = 0;
+let searchDebounceTimer = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
   bindClearFilter();
+  bindProductSearch();
   loadCategories();
   loadFeaturedProducts();
 });
@@ -46,8 +53,61 @@ document.addEventListener("DOMContentLoaded", () => {
 function bindClearFilter() {
   const clearButton = document.getElementById(ELEMENT_IDS.clearFilter);
   clearButton?.addEventListener("click", () => {
+    clearSearch();
     selectCategory(null);
   });
+}
+
+function bindProductSearch() {
+  const searchInput = document.getElementById(ELEMENT_IDS.searchInput);
+  if (!searchInput) return;
+
+  searchInput.addEventListener("input", () => {
+    window.clearTimeout(searchDebounceTimer);
+
+    searchDebounceTimer = window.setTimeout(() => {
+      const query = searchInput.value.trim();
+      applySearch(query);
+    }, SEARCH_DEBOUNCE_MS);
+  });
+
+  searchInput.addEventListener("search", () => {
+    if (!searchInput.value.trim()) {
+      clearSearch();
+    }
+  });
+}
+
+function applySearch(query) {
+  searchQuery = query;
+
+  if (query) {
+    selectedCategoryId = null;
+    selectedCategoryName = null;
+
+    document.querySelectorAll(".category-card").forEach((card) => {
+      card.classList.remove("is-active");
+      card.setAttribute("aria-pressed", "false");
+    });
+  }
+
+  updateFeaturedHeading();
+  loadFeaturedProducts();
+
+  if (query) {
+    document.getElementById("produtos")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+}
+
+function clearSearch() {
+  searchQuery = "";
+  const searchInput = document.getElementById(ELEMENT_IDS.searchInput);
+  if (searchInput) {
+    searchInput.value = "";
+  }
 }
 
 async function loadCategories() {
@@ -116,6 +176,7 @@ function bindCategoryFilters(track, categories) {
         return;
       }
 
+      clearSearch();
       selectCategory(category);
     });
   });
@@ -147,13 +208,17 @@ function updateFeaturedHeading() {
   const clearButton = document.getElementById(ELEMENT_IDS.clearFilter);
 
   if (title) {
-    title.textContent = selectedCategoryName
-      ? `Produtos em ${selectedCategoryName}`
-      : "Os mais vendidos";
+    if (searchQuery) {
+      title.textContent = `Resultados para "${searchQuery}"`;
+    } else if (selectedCategoryName) {
+      title.textContent = `Produtos em ${selectedCategoryName}`;
+    } else {
+      title.textContent = "Os mais vendidos";
+    }
   }
 
   if (clearButton) {
-    clearButton.hidden = !selectedCategoryId;
+    clearButton.hidden = !selectedCategoryId && !searchQuery;
   }
 }
 
@@ -162,6 +227,7 @@ async function loadFeaturedProducts() {
   const loading = document.getElementById(ELEMENT_IDS.loading);
   const error = document.getElementById(ELEMENT_IDS.error);
   const empty = document.getElementById(ELEMENT_IDS.empty);
+  const requestId = ++productsRequestId;
 
   if (loading) loading.hidden = false;
   if (error) error.hidden = true;
@@ -169,18 +235,28 @@ async function loadFeaturedProducts() {
   if (list) list.innerHTML = "";
 
   try {
-    const products = selectedCategoryId
-      ? await getProductsByCategoryId(selectedCategoryId)
-      : await getAllProducts();
+    let products;
+
+    if (searchQuery) {
+      products = await searchProductsByName(searchQuery);
+    } else if (selectedCategoryId) {
+      products = await getProductsByCategoryId(selectedCategoryId);
+    } else {
+      products = await getAllProducts();
+    }
+
+    if (requestId !== productsRequestId) return;
 
     const activeProducts = products.filter((product) => product.active !== false);
 
     if (!Array.isArray(activeProducts) || activeProducts.length === 0) {
       if (empty) {
         empty.hidden = false;
-        empty.textContent = selectedCategoryId
-          ? "Nenhum produto encontrado nesta categoria."
-          : "Nenhum produto encontrado.";
+        empty.textContent = searchQuery
+          ? `Nenhum produto encontrado para "${searchQuery}".`
+          : selectedCategoryId
+            ? "Nenhum produto encontrado nesta categoria."
+            : "Nenhum produto encontrado.";
       }
       return;
     }
@@ -202,10 +278,13 @@ async function loadFeaturedProducts() {
 
     document.dispatchEvent(new CustomEvent("ecafe:featured-products-loaded"));
   } catch (err) {
+    if (requestId !== productsRequestId) return;
     console.error("Erro ao carregar produtos (home):", err);
     if (error) error.hidden = false;
   } finally {
-    if (loading) loading.hidden = true;
+    if (requestId === productsRequestId && loading) {
+      loading.hidden = true;
+    }
   }
 }
 

@@ -68,6 +68,14 @@ a {
   padding: 0 20px;
 }
 
+header,
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
 /* Top bar (restaurado) */
 .top-bar {
   width: 100%;

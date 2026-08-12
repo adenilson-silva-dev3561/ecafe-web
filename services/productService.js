@@ -53,6 +53,26 @@ function normalizeProductList(data) {
   return [];
 }
 
+function removeAccents(value) {
+  return String(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function matchesAccentInsensitiveSearch(product, query) {
+  const normalizedQuery = removeAccents(query);
+  const searchableFields = [
+    product.name,
+    product.description,
+    product.categoryName,
+  ];
+
+  return searchableFields.some((field) =>
+    removeAccents(field || "").includes(normalizedQuery),
+  );
+}
+
 async function getProductsByCategoryId(categoryId) {
   if (!categoryId) {
     throw new Error("ID da categoria não informado.");
@@ -62,9 +82,37 @@ async function getProductsByCategoryId(categoryId) {
   return normalizeProductList(data).map(normalizeProduct);
 }
 
+async function searchProductsByName(name) {
+  const query = String(name || "").trim();
+  if (!query) return [];
+
+  let products = [];
+
+  try {
+    const data = await request(
+      `${API_BASE}/products/includes/${encodeURIComponent(query)}`,
+    );
+    products = normalizeProductList(data).map(normalizeProduct);
+  } catch (err) {
+    if (!String(err.message).includes("404")) {
+      throw err;
+    }
+  }
+
+  if (products.length === 0) {
+    const allProducts = await getAllProducts();
+    products = allProducts.filter((product) =>
+      matchesAccentInsensitiveSearch(product, query),
+    );
+  }
+
+  return products;
+}
+
 export {
   getProductById,
   getRelatedProducts,
   getAllProducts,
   getProductsByCategoryId,
+  searchProductsByName,
 };
