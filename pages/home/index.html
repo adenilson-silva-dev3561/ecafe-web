@@ -309,259 +309,23 @@
             <p class="featured-subtitle">PRODUTOS EM DESTAQUE</p>
             <h2 class="featured-title">Os mais vendidos</h2>
 
-            <div class="products-row" aria-label="Produtos em destaque">
-              <article class="product-card" data-product-id="1">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catCafe.png"
-                  alt="Café 100% Arábica"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Café 100% Arábica</p>
-                  <p class="product-weight">500g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 24,90</span>
-                    <button class="btn-add" type="button">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
+            <p class="featured-products-status" id="featured-product-loading">
+              Carregando produtos...
+            </p>
+            <p class="featured-products-status" id="featured-product-error" hidden>
+              Não foi possível carregar os produtos. Verifique a API e tente
+              novamente.
+            </p>
+            <p class="featured-products-status" id="featured-product-empty" hidden>
+              Nenhum produto encontrado.
+            </p>
 
-              <article class="product-card" data-product-id="2">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catGraos.png"
-                  alt="Café Especial"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Café Especial</p>
-                  <p class="product-weight">500g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 32,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="3">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catCafe.png"
-                  alt="Café Tradicional"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Café Tradicional</p>
-                  <p class="product-weight">500g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 18,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="4">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catDoces.png"
-                  alt="Paçoca Rolha"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Paçoca Rolha</p>
-                  <p class="product-weight">300g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 12,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="5">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catOleaginosas.png"
-                  alt="Amendoim Torrado"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Amendoim Torrado</p>
-                  <p class="product-weight">500g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 9,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="6">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catFarinhas.png"
-                  alt="Kit Doces Finos"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Kit Doces Finos</p>
-                  <p class="product-weight">400g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 42,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="7">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catTemperos.png"
-                  alt="Páprica Doce"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Páprica Doce</p>
-                  <p class="product-weight">250g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 8,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="8">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catGraos.png"
-                  alt="Mix de Grãos"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Mix de Grãos</p>
-                  <p class="product-weight">500g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 14,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="9">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catDoces.png"
-                  alt="Rapadura Artesanal"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Rapadura Artesanal</p>
-                  <p class="product-weight">350g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 7,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="10">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catOleaginosas.png"
-                  alt="Castanha de Caju"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Castanha de Caju</p>
-                  <p class="product-weight">300g</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 19,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="11">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catFarinhas.png"
-                  alt="Farinha de Mandioca"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Farinha de Mandioca</p>
-                  <p class="product-weight">1kg</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 6,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="product-card" data-product-id="12">
-                <button class="fav-btn" aria-label="Favoritar" type="button">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
-                <img
-                  src="../../assets/images/catCestas.png"
-                  alt="Cesta Premium eCafe"
-                  class="product-image"
-                />
-                <div class="product-info">
-                  <p class="product-name">Cesta Premium eCafe</p>
-                  <p class="product-weight">1 unidade</p>
-                  <div class="product-buy">
-                    <span class="product-price">R$ 89,90</span>
-                    <button class="btn-add">
-                      <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </article>
-            </div>
+            <div
+              class="products-row"
+              id="featured-product-list"
+              aria-label="Produtos em destaque"
+              aria-live="polite"
+            ></div>
           </div>
         </div>
       </section>
@@ -779,5 +543,6 @@
 
     <script src="../../assets/js/header.js"></script>
     <script src="../../assets/js/main.js"></script>
+    <script type="module" src="../../assets/js/pages/home.js"></script>
   </body>
 </html>

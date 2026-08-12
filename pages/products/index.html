@@ -1,14 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>eCafe - Products</title>
+    <title>eCafe - Produtos</title>
     <link rel="stylesheet" href="../../assets/css/style.css" />
   </head>
   <body>
-    <main>
-      <h1>Products Page</h1>
+    <main class="page-main page-products">
+      <header class="page-header page-header--small">
+        <div class="container">
+          <p class="page-caption">Produtos</p>
+          <h1 class="page-title">Catálogo de produtos</h1>
+          <p class="page-subtitle">
+            Os produtos são carregados diretamente da API do backend.
+          </p>
+        </div>
+      </header>
+
+      <section class="products-section container">
+        <div class="products-actions" style="margin-bottom:12px">
+          <button id="product-reload" class="btn">Recarregar produtos</button>
+        </div>
+        <div class="page-alert page-alert--loading" id="product-loading">
+          Carregando produtos...
+        </div>
+        <div class="page-alert page-alert--error" id="product-error" hidden>
+          Não foi possível carregar os produtos. Verifique a API e tente novamente.
+        </div>
+        <div class="page-alert page-alert--empty" id="product-empty" hidden>
+          Nenhum produto encontrado.
+        </div>
+
+        <div class="products-grid" id="product-list" aria-live="polite"></div>
+      </section>
     </main>
+
+    <script src="../../assets/js/header.js"></script>
+    <script type="module" src="../../assets/js/pages/products.js"></script>
   </body>
 </html>

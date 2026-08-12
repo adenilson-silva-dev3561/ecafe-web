@@ -309,84 +309,104 @@ document.addEventListener("DOMContentLoaded", () => {
     syncCategoryCarouselMode();
   }
 
-  // Featured products: no JS behavior required — static grid only
-  const productsRow = document.querySelector(
-    ".featured-products-section .products-row",
-  );
-  const productCards = productsRow
-    ? Array.from(productsRow.querySelectorAll(".product-card"))
-    : [];
+  function initFeaturedProductCards() {
+    const productsRow = document.querySelector(
+      ".featured-products-section .products-row",
+    );
+    const productCards = productsRow
+      ? Array.from(productsRow.querySelectorAll(".product-card"))
+      : [];
 
-  const cardRatings = [
-    4.7, 5.0, 4.8, 4.9, 4.6, 5.0, 4.8, 4.7, 4.9, 5.0, 4.8, 4.6,
-  ];
+    const cardRatings = [
+      4.7, 5.0, 4.8, 4.9, 4.6, 5.0, 4.8, 4.7, 4.9, 5.0, 4.8, 4.6,
+    ];
 
-  productCards.forEach((card, index) => {
-    if (!card.querySelector(".product-rating")) {
-      const ratingValue = cardRatings[index % cardRatings.length] ?? 5;
+    productCards.forEach((card, index) => {
+      if (card.dataset.featuredBound === "true") {
+        return;
+      }
 
-      const rating = document.createElement("div");
-      rating.className = "product-rating";
-      rating.setAttribute(
-        "aria-label",
-        `Avaliação ${ratingValue.toFixed(1)} de 5 estrelas`,
-      );
-      rating.innerHTML = `
+      card.dataset.featuredBound = "true";
+
+      if (!card.querySelector(".product-rating")) {
+        const ratingValue = cardRatings[index % cardRatings.length] ?? 5;
+
+        const rating = document.createElement("div");
+        rating.className = "product-rating";
+        rating.setAttribute(
+          "aria-label",
+          `Avaliação ${ratingValue.toFixed(1)} de 5 estrelas`,
+        );
+        rating.innerHTML = `
         <span class="product-rating-stars">★</span>
         <span class="product-rating-value">${ratingValue.toFixed(1)}</span>
       `;
 
-      const cardLink = card.querySelector(".product-card-link");
-      if (cardLink) {
-        const firstChild = cardLink.firstElementChild ?? cardLink.firstChild;
-        if (firstChild) {
-          cardLink.insertBefore(rating, firstChild);
+        const cardLink = card.querySelector(".product-card-link");
+        if (cardLink) {
+          const firstChild = cardLink.firstElementChild ?? cardLink.firstChild;
+          if (firstChild) {
+            cardLink.insertBefore(rating, firstChild);
+          } else {
+            cardLink.appendChild(rating);
+          }
         } else {
-          cardLink.appendChild(rating);
-        }
-      } else {
-        const image = card.querySelector(".product-image");
-        if (image) {
-          card.insertBefore(rating, image);
-        } else {
-          card.prepend(rating);
+          const image = card.querySelector(".product-image");
+          if (image) {
+            card.insertBefore(rating, image);
+          } else {
+            card.prepend(rating);
+          }
         }
       }
-    }
 
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "link");
-    card.setAttribute("aria-label", "Abrir detalhes do produto");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "link");
+      card.setAttribute("aria-label", "Abrir detalhes do produto");
 
-    const goToDetails = (event) => {
-      const targetButton = event.target.closest("button");
-      const isFavoriteButton = targetButton?.classList.contains("fav-btn");
-      const productId = card.dataset.productId;
+      const goToDetails = (event) => {
+        const targetButton = event.target.closest("button");
+        const isFavoriteButton = targetButton?.classList.contains("fav-btn");
+        const productId = card.dataset.productId;
 
-      if (!productId || isFavoriteButton) {
-        return;
-      }
+        if (!productId || isFavoriteButton) {
+          return;
+        }
 
-      window.location.href = `../products/details.html?id=${productId}`;
-    };
+        const cardLink = card.querySelector(".product-card-link");
+        if (cardLink) {
+          window.location.href = cardLink.href;
+          return;
+        }
 
-    card.addEventListener("click", (event) => {
-      const targetButton = event.target.closest("button");
-      const isCartButton = targetButton?.classList.contains("btn-add");
+        window.location.href = `../products/details.html?id=${productId}`;
+      };
 
-      if (targetButton && isCartButton) {
-        event.stopPropagation();
-      }
+      card.addEventListener("click", (event) => {
+        const targetButton = event.target.closest("button");
+        const isCartButton = targetButton?.classList.contains("btn-add");
 
-      goToDetails(event);
-    });
+        if (targetButton && isCartButton) {
+          event.stopPropagation();
+          return;
+        }
 
-    card.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
         goToDetails(event);
-      }
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          goToDetails(event);
+        }
+      });
     });
+  }
+
+  initFeaturedProductCards();
+  document.addEventListener("ecafe:featured-products-loaded", () => {
+    initFeaturedProductCards();
+    initMobileScrollReveal();
   });
 
   const mobileRevealMq = window.matchMedia("(max-width: 768px)");

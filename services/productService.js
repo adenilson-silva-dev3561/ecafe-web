@@ -1,7 +1,6 @@
 import { request } from "./api.js";
-import { productCatalog } from "./productCatalog.js";
 
-const API_BASE = window.ECAFE_API_BASE || "http://localhost:8080/api";
+const API_BASE = window.ECAFE_API_BASE || "http://localhost:8080/api/v1";
 
 function normalizeProduct(product) {
   if (!product) return null;
@@ -15,14 +14,11 @@ function normalizeProduct(product) {
       ? product.images
       : product.image
         ? [product.image]
-        : [],
-    image: product.image || product.images?.[0] || "",
+        : product.imageUrl
+          ? [product.imageUrl]
+          : [],
+    image: product.image || product.images?.[0] || product.imageUrl || "",
   };
-}
-
-function findLocalProduct(id) {
-  const product = productCatalog.find((item) => item.id === Number(id));
-  return product ? normalizeProduct(product) : null;
 }
 
 async function getProductById(id) {
@@ -30,48 +26,24 @@ async function getProductById(id) {
     throw new Error("ID do produto não informado.");
   }
 
-  try {
-    const product = await request(`${API_BASE}/products/${id}`);
-    return normalizeProduct(product);
-  } catch {
-    const localProduct = findLocalProduct(id);
-
-    if (!localProduct) {
-      return null;
-    }
-
-    return localProduct;
-  }
+  const product = await request(`${API_BASE}/products/${id}`);
+  return normalizeProduct(product);
 }
 
 async function getRelatedProducts(categorySlug, excludeId, limit = 5) {
-  try {
-    const products = await request(
-      `${API_BASE}/products?category=${categorySlug}&limit=${limit + 1}`,
-    );
-    return products
-      .map(normalizeProduct)
-      .filter((product) => product.id !== Number(excludeId))
-      .slice(0, limit);
-  } catch {
-    return productCatalog
-      .filter(
-        (product) =>
-          product.categorySlug === categorySlug &&
-          product.id !== Number(excludeId),
-      )
-      .slice(0, limit)
-      .map(normalizeProduct);
-  }
+  const products = await request(
+    `${API_BASE}/products?category=${encodeURIComponent(categorySlug)}&limit=${limit + 1}`,
+  );
+
+  return products
+    .map(normalizeProduct)
+    .filter((product) => product.id !== Number(excludeId))
+    .slice(0, limit);
 }
 
 async function getAllProducts() {
-  try {
-    const products = await request(`${API_BASE}/products`);
-    return products.map(normalizeProduct);
-  } catch {
-    return productCatalog.map(normalizeProduct);
-  }
+  const products = await request(`${API_BASE}/products`);
+  return products.map(normalizeProduct);
 }
 
-export { getProductById, getRelatedProducts, getAllProducts, productCatalog };
+export { getProductById, getRelatedProducts, getAllProducts };

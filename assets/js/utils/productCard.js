@@ -1,11 +1,20 @@
 import { formatCurrency } from "./format.js";
 
 function resolveImagePath(imagePath, basePath = "") {
-  if (!imagePath) return "";
+  if (!imagePath) {
+    return `${basePath}assets/images/catCafe.png`;
+  }
   if (imagePath.startsWith("http") || imagePath.startsWith("/")) {
     return imagePath;
   }
   return `${basePath}${imagePath.replace(/^\.\.\//, "")}`;
+}
+
+function getProductSubtitle(product) {
+  if (product.referenceWeight) return product.referenceWeight;
+  if (product.categoryName) return product.categoryName;
+  if (product.soldByWeight && product.unit) return product.unit;
+  return "";
 }
 
 function renderProductCard(product, options = {}) {
@@ -16,12 +25,8 @@ function renderProductCard(product, options = {}) {
   } = options;
 
   const imageSrc = resolveImagePath(product.image, basePath);
-  const unitSuffix = product.soldByWeight
-    ? ` / ${product.unit}`
-    : product.referenceWeight
-      ? ` · ${product.referenceWeight}`
-      : "";
   const priceLabel = `${formatCurrency(product.price)}${product.soldByWeight ? ` / ${product.unit}` : ""}`;
+  const subtitle = getProductSubtitle(product);
 
   const ratingValue = Number(product.rating || 5);
 
@@ -35,7 +40,7 @@ function renderProductCard(product, options = {}) {
         <img src="${imageSrc}" alt="${product.name}" class="product-image" loading="lazy" />
         <div class="product-info">
           <p class="product-name">${product.name}</p>
-          <p class="product-weight">${product.referenceWeight || product.unit}${unitSuffix && !product.soldByWeight ? "" : product.referenceWeight ? "" : ""}</p>
+          ${subtitle ? `<p class="product-weight">${subtitle}</p>` : ""}
           <div class="product-buy">
             <span class="product-price">${priceLabel}</span>
             <button class="btn-add" type="button" data-action="add-to-cart" data-product-id="${product.id}">
