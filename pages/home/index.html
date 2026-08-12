@@ -212,87 +212,13 @@
               class="categories-carousel"
               aria-label="Carrossel de categorias"
             >
-              <div class="categories-track">
-                <!-- Cafés -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catCafe.png"
-                    alt="Categoria Cafés - cafés especiais em grãos e moídos"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Cafés</h3>
-                </article>
-
-                <!-- Grãos -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catGraos.png"
-                    alt="Categoria Grãos - grãos selecionados e produtos naturais"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Grãos</h3>
-                </article>
-
-                <!-- Oleaginosas -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catOleaginosas.png"
-                    alt="Categoria Oleaginosas - castanhas, amendoins e nozes"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Oleaginosas</h3>
-                </article>
-
-                <!-- Doces -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catDoces.png"
-                    alt="Categoria Doces - paçocas, rapaduras e doces artesanais"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Doces</h3>
-                </article>
-
-                <!-- Temperos -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catTemperos.png"
-                    alt="Categoria Temperos - alho, colorau, páprica e especiarias"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Temperos</h3>
-                </article>
-
-                <!-- Farinhas -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catFarinhas.png"
-                    alt="Categoria Farinhas - farinha de mandioca, milho e trigo"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Farinhas</h3>
-                </article>
-
-                <!-- Mercearia -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catDiversos.png"
-                    alt="Categoria Mercearia - produtos alimentícios variados"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Mercearia</h3>
-                </article>
-
-                <!-- Kits -->
-                <article class="category-card">
-                  <img
-                    src="../../assets/images/catCestas.png"
-                    alt="Categoria Cestas - cestas presenteáveis especiais"
-                    class="category-image"
-                  />
-                  <h3 class="category-title">Cestas</h3>
-                </article>
-              </div>
+              <p class="categories-status" id="categories-loading">
+                Carregando categorias...
+              </p>
+              <p class="categories-status" id="categories-error" hidden>
+                Não foi possível carregar as categorias.
+              </p>
+              <div class="categories-track" id="categories-track"></div>
             </div>
 
             <button class="categories-nav next" aria-label="Próxima categoria">
@@ -307,7 +233,17 @@
         <div class="container">
           <div class="featured-products">
             <p class="featured-subtitle">PRODUTOS EM DESTAQUE</p>
-            <h2 class="featured-title">Os mais vendidos</h2>
+            <div class="featured-heading-row">
+              <h2 class="featured-title" id="featured-title">Os mais vendidos</h2>
+              <button
+                type="button"
+                class="featured-clear-filter"
+                id="featured-clear-filter"
+                hidden
+              >
+                Ver todos
+              </button>
+            </div>
 
             <p class="featured-products-status" id="featured-product-loading">
               Carregando produtos...

@@ -43,7 +43,28 @@ async function getRelatedProducts(categorySlug, excludeId, limit = 5) {
 
 async function getAllProducts() {
   const products = await request(`${API_BASE}/products`);
-  return products.map(normalizeProduct);
+  return normalizeProductList(products).map(normalizeProduct);
 }
 
-export { getProductById, getRelatedProducts, getAllProducts };
+function normalizeProductList(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.value)) return data.value;
+  if (data?.id) return [data];
+  return [];
+}
+
+async function getProductsByCategoryId(categoryId) {
+  if (!categoryId) {
+    throw new Error("ID da categoria não informado.");
+  }
+
+  const data = await request(`${API_BASE}/products/category/${categoryId}`);
+  return normalizeProductList(data).map(normalizeProduct);
+}
+
+export {
+  getProductById,
+  getRelatedProducts,
+  getAllProducts,
+  getProductsByCategoryId,
+};

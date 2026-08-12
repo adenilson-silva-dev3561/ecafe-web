@@ -124,18 +124,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const categoriesTrack = document.querySelector(".categories-track");
   const categoriesCarousel = document.querySelector(".categories-carousel");
-  const categoryCards = Array.from(document.querySelectorAll(".category-card"));
   const prevCategory = document.querySelector(".categories-nav.prev");
   const nextCategory = document.querySelector(".categories-nav.next");
+  const categoriesCarouselWrap = document.querySelector(
+    ".categories-carousel-wrap",
+  );
   const mobileCategoriesMq = window.matchMedia("(max-width: 768px)");
+  let categoryIndex = 0;
 
-  if (
-    categoriesTrack &&
-    categoryCards.length > 0 &&
-    prevCategory &&
-    nextCategory
-  ) {
-    let categoryIndex = 0;
+  function getCategoryCards() {
+    return Array.from(document.querySelectorAll(".category-card"));
+  }
+
+  function initCategoriesCarousel() {
+    const categoryCards = getCategoryCards();
+
+    if (
+      !categoriesTrack ||
+      categoryCards.length === 0 ||
+      !prevCategory ||
+      !nextCategory
+    ) {
+      return;
+    }
+
+    if (categoriesCarouselWrap?.dataset.carouselReady === "true") {
+      categoryIndex = 0;
+      syncCategoryCarouselMode();
+      return;
+    }
+
+    if (categoriesCarouselWrap) {
+      categoriesCarouselWrap.dataset.carouselReady = "true";
+    }
 
     const isMobileCategories = () => mobileCategoriesMq.matches;
 
@@ -144,7 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const getCategoryStep = () => {
-      return categoryCards[0].clientWidth + getCategoryGap();
+      const cards = getCategoryCards();
+      if (!cards.length) return 0;
+      return cards[0].clientWidth + getCategoryGap();
     };
 
     const getVisibleCount = () => {
@@ -156,8 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const updateCategoryButtonsDesktop = () => {
+      const cards = getCategoryCards();
       const visibleCount = getVisibleCount();
-      const maxIndex = Math.max(0, categoryCards.length - visibleCount);
+      const maxIndex = Math.max(0, cards.length - visibleCount);
       prevCategory.disabled = categoryIndex <= 0;
       nextCategory.disabled = categoryIndex >= maxIndex;
     };
@@ -272,8 +296,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const cards = getCategoryCards();
       const visibleCount = getVisibleCount();
-      const maxIndex = Math.max(0, categoryCards.length - visibleCount);
+      const maxIndex = Math.max(0, cards.length - visibleCount);
       if (categoryIndex >= maxIndex) return;
       categoryIndex += 1;
       updateCategoryPositionDesktop();
@@ -308,6 +333,12 @@ document.addEventListener("DOMContentLoaded", () => {
     enableCategoryPointerScroll();
     syncCategoryCarouselMode();
   }
+
+  initCategoriesCarousel();
+  document.addEventListener("ecafe:categories-loaded", () => {
+    initCategoriesCarousel();
+    initMobileScrollReveal();
+  });
 
   function initFeaturedProductCards() {
     const productsRow = document.querySelector(
