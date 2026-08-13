@@ -414,6 +414,10 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       card.addEventListener("click", (event) => {
+        if (event.target.closest(".product-buy, .product-qty-control, .product-qty-input")) {
+          return;
+        }
+
         const targetButton = event.target.closest("button");
         const isCartButton = targetButton?.classList.contains("btn-add");
 

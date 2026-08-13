@@ -1040,12 +1040,75 @@ header,
   line-height: 1.2;
 }
 
+.product-unit-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--green-soft, rgba(111, 168, 79, 0.14));
+  color: var(--green, #6fa84f);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
 /* ================= BOTÃO ================= */
 
 .product-buy {
   width: 100%;
   margin-top: auto;
   padding-top: 10px;
+}
+
+.product-qty-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.product-qty-row--simple {
+  gap: 0;
+}
+
+.product-qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.product-qty-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.product-qty-input {
+  width: 56px;
+  height: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.product-qty-unit {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  min-width: 22px;
 }
 
 .btn-add {
@@ -1266,6 +1329,25 @@ header,
 
   .product-weight {
     margin-top: 2px;
+    font-size: 0.68rem;
+  }
+
+  .product-unit-badge {
+    font-size: 0.62rem;
+    padding: 3px 8px;
+  }
+
+  .product-qty-btn,
+  .product-qty-input {
+    height: 28px;
+  }
+
+  .product-qty-input {
+    width: 46px;
+    font-size: 0.72rem;
+  }
+
+  .product-qty-unit {
     font-size: 0.68rem;
   }
 

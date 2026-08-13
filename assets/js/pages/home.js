@@ -5,7 +5,8 @@ import {
   searchProductsByName,
 } from "../../../services/productService.js";
 import { renderProductCard } from "../utils/productCard.js";
-import { addToCart, updateCartBadge } from "../../../services/cartService.js";
+import { bindProductCardEvents } from "../utils/bindProductCards.js";
+import { updateCartBadge } from "../../../services/cartService.js";
 
 const ELEMENT_IDS = {
   list: "featured-product-list",
@@ -22,8 +23,6 @@ const ELEMENT_IDS = {
 
 const FEATURED_LIMIT = 12;
 const SEARCH_DEBOUNCE_MS = 300;
-const DEFAULT_ADD_QUANTITY = 1;
-const DEFAULT_WEIGHT_ADD_QUANTITY = 0.5;
 
 const CATEGORY_IMAGES = {
   1: "catCafe.png",
@@ -269,6 +268,7 @@ async function loadFeaturedProducts() {
           renderProductCard(product, {
             basePath: "../../",
             detailsPath: "../products/details.html",
+            showQuantityControls: false,
           }),
         )
         .join("");
@@ -286,42 +286,4 @@ async function loadFeaturedProducts() {
       loading.hidden = true;
     }
   }
-}
-
-function bindProductCardEvents(container, products) {
-  const productsById = new Map(
-    products.map((product) => [String(product.id), product]),
-  );
-
-  container.querySelectorAll(".product-card").forEach((card) => {
-    const productId = card.dataset.productId;
-    const product = productsById.get(productId);
-
-    if (!product) return;
-
-    const addButton = card.querySelector(".btn-add");
-
-    addButton?.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      addToCart({
-        productId: Number(product.id),
-        name: product.name,
-        image: product.image,
-        unitPrice: product.price,
-        quantity: product.soldByWeight
-          ? DEFAULT_WEIGHT_ADD_QUANTITY
-          : DEFAULT_ADD_QUANTITY,
-        total:
-          product.price *
-          (product.soldByWeight
-            ? DEFAULT_WEIGHT_ADD_QUANTITY
-            : DEFAULT_ADD_QUANTITY),
-        unit: product.unit || "kg",
-        soldByWeight: Boolean(product.soldByWeight),
-      });
-      updateCartBadge();
-    });
-  });
 }

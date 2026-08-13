@@ -22,6 +22,7 @@ function formatUnitLabel(unit) {
   const labels = {
     kg: "kg",
     g: "g",
+    un: "un",
     unidade: "un",
     pacote: "pacote",
     pote: "pote",
@@ -31,4 +32,14 @@ function formatUnitLabel(unit) {
   return labels[unit] || unit;
 }
 
-export { formatCurrency, formatQuantity, formatUnitLabel };
+function getUnitTypeLabel(unitType, soldByWeight) {
+  const key = String(unitType || "").trim().toUpperCase();
+
+  if (key === "KG" || soldByWeight) {
+    return "Por kg";
+  }
+
+  return "Por unidade";
+}
+
+export { formatCurrency, formatQuantity, formatUnitLabel, getUnitTypeLabel };

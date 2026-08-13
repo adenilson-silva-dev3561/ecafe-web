@@ -3,12 +3,14 @@ import {
   getRelatedProducts,
 } from "../../../services/productService.js";
 import { renderProductCard } from "../utils/productCard.js";
+import { bindProductCardEvents } from "../utils/bindProductCards.js";
 import {
   formatCurrency,
   formatQuantity,
   formatUnitLabel,
 } from "../utils/format.js";
 import { addToCart, updateCartBadge } from "../../../services/cartService.js";
+import { buildCartPayload } from "../../../services/productUnit.js";
 
 const DEFAULT_WEIGHT_PRESETS = [1, 1.5, 2, 5];
 const DEFAULT_UNIT_PRESETS = [1, 2, 3, 5];
@@ -191,7 +193,8 @@ function renderSummary(product) {
   if (packagingBadge) {
     packagingBadge.textContent =
       product.packaging ||
-      (product.soldByWeight ? "Produto a granel" : "Produto selecionado");
+      product.unitLabel ||
+      (product.soldByWeight ? "Vendido por kg" : "Vendido por unidade");
   }
 
   updateTotalBox();
@@ -495,17 +498,7 @@ function attachAddToCartListener(product) {
       return;
     }
 
-    const item = {
-      productId: product.id,
-      name: product.name,
-      image: product.image || product.images?.[0] || "",
-      unitPrice: Number(product.price || 0),
-      quantity: validQuantity,
-      unit: product.unit || (product.soldByWeight ? "kg" : "unidade"),
-      total: Number(product.price || 0) * validQuantity,
-    };
-
-    addToCart(item);
+    addToCart(buildCartPayload(product, validQuantity));
     updateCartBadge();
     showToast(`Produto adicionado ao carrinho ✓`, false);
   });
@@ -527,9 +520,12 @@ function renderRelatedProducts(products) {
       renderProductCard(product, {
         basePath: "../../",
         detailsPath: "details.html",
+        showQuantityControls: false,
       }),
     )
     .join("");
+
+  bindProductCardEvents(container, products);
 }
 
 function showToast(message, isError = false) {

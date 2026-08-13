@@ -1,4 +1,5 @@
-import { formatCurrency } from "./format.js";
+import { formatCurrency, formatQuantity, formatUnitLabel } from "./format.js";
+import { getDefaultQuantity } from "../../../services/productUnit.js";
 
 function resolveImagePath(imagePath, basePath = "") {
   if (!imagePath) {
@@ -11,10 +12,16 @@ function resolveImagePath(imagePath, basePath = "") {
 }
 
 function getProductSubtitle(product) {
-  if (product.referenceWeight) return product.referenceWeight;
   if (product.categoryName) return product.categoryName;
-  if (product.soldByWeight && product.unit) return product.unit;
+  if (product.referenceWeight) return product.referenceWeight;
   return "";
+}
+
+function getPriceLabel(product) {
+  const unitLabel = formatUnitLabel(
+    product.unitShortLabel || product.unit || "unidade",
+  );
+  return `${formatCurrency(product.price)} / ${unitLabel}`;
 }
 
 function renderProductCard(product, options = {}) {
@@ -22,13 +29,38 @@ function renderProductCard(product, options = {}) {
     basePath = "../../",
     detailsPath = "details.html",
     compact = false,
+    showQuantityControls = true,
   } = options;
 
   const imageSrc = resolveImagePath(product.image, basePath);
-  const priceLabel = `${formatCurrency(product.price)}${product.soldByWeight ? ` / ${product.unit}` : ""}`;
+  const priceLabel = getPriceLabel(product);
   const subtitle = getProductSubtitle(product);
-
+  const unitBadge =
+    product.unitLabel || (product.soldByWeight ? "Por kg" : "Por unidade");
+  const qtyUnit = formatUnitLabel(
+    product.unitShortLabel || product.unit || "unidade",
+  );
+  const defaultQty = getDefaultQuantity(product);
+  const defaultQtyDisplay = product.soldByWeight
+    ? formatQuantity(defaultQty, product.unit || "kg")
+    : String(defaultQty);
   const ratingValue = Number(product.rating || 5);
+
+  const quantityControls = showQuantityControls
+    ? `
+          <div class="product-qty-control" aria-label="Quantidade">
+            <button type="button" class="product-qty-btn" data-action="decrease-qty" aria-label="Diminuir quantidade">−</button>
+            <input
+              type="text"
+              class="product-qty-input"
+              value="${defaultQtyDisplay}"
+              inputmode="${product.soldByWeight ? "decimal" : "numeric"}"
+              aria-label="Quantidade em ${qtyUnit}"
+            />
+            <button type="button" class="product-qty-btn" data-action="increase-qty" aria-label="Aumentar quantidade">+</button>
+            <span class="product-qty-unit">${qtyUnit}</span>
+          </div>`
+    : "";
 
   return `
     <article class="product-card${compact ? " product-card--compact" : ""}" data-product-id="${product.id}">
@@ -41,14 +73,18 @@ function renderProductCard(product, options = {}) {
         <div class="product-info">
           <p class="product-name">${product.name}</p>
           ${subtitle ? `<p class="product-weight">${subtitle}</p>` : ""}
-          <div class="product-buy">
-            <span class="product-price">${priceLabel}</span>
-            <button class="btn-add" type="button" data-action="add-to-cart" data-product-id="${product.id}">
-              <i class="fa-solid fa-cart-shopping"></i> Adicionar
-            </button>
-          </div>
+          <span class="product-unit-badge">${unitBadge}</span>
+          <span class="product-price">${priceLabel}</span>
         </div>
       </a>
+      <div class="product-buy">
+        <div class="product-qty-row${showQuantityControls ? "" : " product-qty-row--simple"}">
+          ${quantityControls}
+          <button class="btn-add" type="button" data-action="add-to-cart" data-product-id="${product.id}">
+            <i class="fa-solid fa-cart-shopping"></i> Adicionar
+          </button>
+        </div>
+      </div>
     </article>
   `;
 }

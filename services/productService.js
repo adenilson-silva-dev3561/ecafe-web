@@ -1,15 +1,15 @@
 import { request } from "./api.js";
+import { applyUnitTypeToProduct } from "./productUnit.js";
 
 const API_BASE = window.ECAFE_API_BASE || "http://localhost:8080/api/v1";
 
 function normalizeProduct(product) {
   if (!product) return null;
 
-  return {
+  return applyUnitTypeToProduct({
     ...product,
     id: Number(product.id),
     price: Number(product.price),
-    soldByWeight: Boolean(product.soldByWeight),
     images: product.images?.length
       ? product.images
       : product.image
@@ -18,7 +18,7 @@ function normalizeProduct(product) {
           ? [product.imageUrl]
           : [],
     image: product.image || product.images?.[0] || product.imageUrl || "",
-  };
+  });
 }
 
 async function getProductById(id) {

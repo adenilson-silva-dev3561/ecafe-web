@@ -9,6 +9,7 @@ import {
   formatCurrency,
   formatQuantity,
   formatUnitLabel,
+  getUnitTypeLabel,
 } from "../utils/format.js";
 
 const FREE_SHIPPING_LIMIT = 199;
@@ -94,7 +95,8 @@ function renderCart() {
   cartItemsContainer.innerHTML = cart
     .map((item) => {
       const quantityValue = Number(item.quantity || 0);
-      const unitLabel = formatUnitLabel(item.unit || "kg");
+      const unitLabel = formatUnitLabel(item.unit || (item.soldByWeight ? "kg" : "unidade"));
+      const unitTypeLabel = getUnitTypeLabel(item.unitType, item.soldByWeight);
       const itemTotal = Number(
         item.total || item.quantity * (item.unitPrice || 0),
       );
@@ -105,18 +107,18 @@ function renderCart() {
 
           <div class="cart-item-content">
             <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-meta">${item.category || "Produto"}</div>
+            <div class="cart-item-meta">${item.category || "Produto"} · ${unitTypeLabel}</div>
           </div>
 
           <div>
             <div class="cart-item-price">${formatCurrency(item.unitPrice || 0)}</div>
-            <div class="cart-item-unit">${item.soldByWeight ? `/${unitLabel}` : `${unitLabel}`}</div>
+            <div class="cart-item-unit">/${unitLabel}</div>
           </div>
 
           <div>
             <div class="cart-quantity-control" aria-label="Quantidade do produto">
               <button class="cart-qty-btn" type="button" data-action="decrease" data-product-id="${item.productId}" aria-label="Diminuir quantidade">−</button>
-              <span class="cart-qty-value">${formatQuantity(quantityValue, item.unit || "kg")} ${unitLabel}</span>
+              <span class="cart-qty-value">${formatQuantity(quantityValue, item.unit || (item.soldByWeight ? "kg" : "unidade"))} ${unitLabel}</span>
               <button class="cart-qty-btn" type="button" data-action="increase" data-product-id="${item.productId}" aria-label="Aumentar quantidade">+</button>
             </div>
           </div>
@@ -148,16 +150,14 @@ function bindCartActions() {
 
       if (!item) return;
 
-      const nextQuantity =
-        Number(item.quantity || 0) - (item.soldByWeight ? 0.5 : 1);
-      const finalQuantity = item.soldByWeight
-        ? Math.max(0.5, nextQuantity)
-        : Math.max(1, nextQuantity);
+      const step = Number(item.increment) || (item.soldByWeight ? 0.5 : 1);
+      const nextQuantity = Number(item.quantity || 0) - step;
+      const minimum = item.soldByWeight ? step : 1;
 
-      if (finalQuantity <= 0) {
+      if (nextQuantity < minimum) {
         removeCartItem(productId);
       } else {
-        updateCartItemQuantity(productId, finalQuantity);
+        updateCartItemQuantity(productId, nextQuantity);
       }
 
       renderCart();
@@ -172,8 +172,8 @@ function bindCartActions() {
 
       if (!item) return;
 
-      const nextQuantity =
-        Number(item.quantity || 0) + (item.soldByWeight ? 0.5 : 1);
+      const step = Number(item.increment) || (item.soldByWeight ? 0.5 : 1);
+      const nextQuantity = Number(item.quantity || 0) + step;
       updateCartItemQuantity(productId, nextQuantity);
       renderCart();
     });
