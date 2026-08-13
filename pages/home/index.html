@@ -73,19 +73,19 @@
           <nav class="nav-links">
             <a href="index.html"> Início </a>
 
-            <a href="#">
+            <a href="#produtos" data-action="products">
               Produtos
               <i class="fa-solid fa-chevron-down"></i>
             </a>
 
-            <a href="#">
+            <a href="#categorias" data-action="categories">
               Categorias
               <i class="fa-solid fa-chevron-down"></i>
             </a>
 
-            <a href="#"> Sobre nós </a>
+            <a href="#sobre-nos" data-action="about"> Sobre nós </a>
 
-            <a href="#"> Contato </a>
+            <a href="#contato" data-action="contact"> Contato </a>
           </nav>
 
           <!-- Ações -->
@@ -198,7 +198,7 @@
         </div>
       </section>
 
-      <section class="categories-section">
+      <section id="categorias" class="categories-section">
         <div class="categories-container">
           <div class="categories-header">
             <p class="categories-subtitle">Nossas categorias</p>
@@ -364,7 +364,7 @@
       </section>
 
       <!-- ================= FOOTER ================= -->
-      <footer class="site-footer" aria-label="Rodapé eCafe">
+      <footer class="site-footer" id="site-footer" aria-label="Rodapé eCafe">
         <div class="footer-inner">
           <div class="footer-col footer-brand-col">
             <div class="footer-brand">
@@ -419,7 +419,7 @@
           <div class="footer-col">
             <h3 class="footer-title">Institucional</h3>
             <ul class="footer-list">
-              <li><a href="#">Sobre nós</a></li>
+              <li><a href="#sobre-nos" data-action="about">Sobre nós</a></li>
               <li><a href="#">Política de Privacidade</a></li>
               <li><a href="#">Trocas e Devoluções</a></li>
               <li><a href="#">Termos de Uso</a></li>
@@ -438,7 +438,7 @@
             </ul>
           </div>
 
-          <div class="footer-col footer-contact-col">
+          <div class="footer-col footer-contact-col" id="contato">
             <h3 class="footer-title">Contato</h3>
             <ul class="footer-contact">
               <li>
@@ -484,6 +484,7 @@
     </main>
 
     <script src="../../assets/js/header.js"></script>
+    <script src="../../assets/js/siteNav.js"></script>
     <script src="../../assets/js/main.js"></script>
     <script type="module" src="../../assets/js/pages/home.js"></script>
   </body>
