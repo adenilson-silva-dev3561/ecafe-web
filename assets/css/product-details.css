@@ -604,7 +604,8 @@
 .product-card--related .product-card-link {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   color: inherit;
   text-decoration: none;
 }
@@ -617,6 +618,8 @@
 }
 
 .product-card--related .product-buy {
+  position: relative;
+  z-index: 2;
   margin-top: 8px;
 }
 

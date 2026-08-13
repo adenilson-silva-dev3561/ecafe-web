@@ -390,51 +390,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
-
-      card.setAttribute("tabindex", "0");
-      card.setAttribute("role", "link");
-      card.setAttribute("aria-label", "Abrir detalhes do produto");
-
-      const goToDetails = (event) => {
-        const targetButton = event.target.closest("button");
-        const isFavoriteButton = targetButton?.classList.contains("fav-btn");
-        const productId = card.dataset.productId;
-
-        if (!productId || isFavoriteButton) {
-          return;
-        }
-
-        const cardLink = card.querySelector(".product-card-link");
-        if (cardLink) {
-          window.location.href = cardLink.href;
-          return;
-        }
-
-        window.location.href = `../products/details.html?id=${productId}`;
-      };
-
-      card.addEventListener("click", (event) => {
-        if (event.target.closest(".product-buy, .product-qty-control, .product-qty-input")) {
-          return;
-        }
-
-        const targetButton = event.target.closest("button");
-        const isCartButton = targetButton?.classList.contains("btn-add");
-
-        if (targetButton && isCartButton) {
-          event.stopPropagation();
-          return;
-        }
-
-        goToDetails(event);
-      });
-
-      card.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          goToDetails(event);
-        }
-      });
     });
   }
 
