@@ -85,12 +85,13 @@ function renderCart() {
 
   if (!cart.length) {
     cartItemsContainer.innerHTML = "";
-    emptyState.hidden = false;
+    if (emptyState) emptyState.hidden = false;
     renderSummary();
+    updateCartControls();
     return;
   }
 
-  emptyState.hidden = true;
+  if (emptyState) emptyState.hidden = true;
 
   cartItemsContainer.innerHTML = cart
     .map((item) => {
@@ -135,6 +136,33 @@ function renderCart() {
 
   bindCartActions();
   renderSummary();
+  updateCartControls();
+}
+
+function updateCartControls() {
+  const cart = getCart();
+  const hasItems = cart.length > 0;
+  const checkoutButton = document.getElementById("checkout-btn");
+  const clearCartButton = document.getElementById("clear-cart-btn");
+
+  if (checkoutButton) {
+    checkoutButton.disabled = !hasItems;
+  }
+
+  if (clearCartButton) {
+    clearCartButton.disabled = !hasItems;
+  }
+}
+
+function handleClearCart() {
+  const cart = getCart();
+  if (!cart.length) {
+    renderCart();
+    return;
+  }
+
+  clearCart();
+  renderCart();
 }
 
 function bindCartActions() {
@@ -193,6 +221,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 
   const checkoutButton = document.getElementById("checkout-btn");
+  const clearCartButton = document.getElementById("clear-cart-btn");
+
+  clearCartButton?.addEventListener("click", handleClearCart);
 
   checkoutButton?.addEventListener("click", () => {
     const cart = getCart();

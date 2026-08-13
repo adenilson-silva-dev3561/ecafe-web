@@ -229,6 +229,13 @@
   padding: 10px 12px;
 }
 
+.btn-link-danger:disabled,
+.btn-checkout:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .btn-danger {
   background: #b63131;
   color: #fff;
