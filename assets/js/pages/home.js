@@ -7,6 +7,7 @@ import {
 import { renderProductCard } from "../utils/productCard.js";
 import { bindProductCardEvents } from "../utils/bindProductCards.js";
 import { updateCartBadge } from "../../../services/cartService.js";
+import { initAuthNav } from "../authNav.js";
 
 const ELEMENT_IDS = {
   list: "featured-product-list",
@@ -42,6 +43,7 @@ let productsRequestId = 0;
 let searchDebounceTimer = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  initAuthNav({ loginPath: "../../login.html" });
   updateCartBadge();
   bindClearFilter();
   bindProductSearch();
