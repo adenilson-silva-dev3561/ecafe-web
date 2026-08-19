@@ -134,6 +134,7 @@ header,
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 24px;
 }
 
 .logo {
@@ -152,7 +153,8 @@ header,
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: clamp(16px, 2vw, 32px);
+  white-space: nowrap;
 }
 
 .nav-links a {
@@ -201,7 +203,10 @@ header,
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  flex: 0 1 auto;
+  min-width: 0;
+  margin-left: auto;
+  gap: 16px;
 }
 
 .search {
@@ -209,7 +214,7 @@ header,
 }
 
 .search input {
-  width: 330px;
+  width: clamp(220px, 20vw, 330px);
   height: 46px;
 
   border: 1px solid #e5e5e5;
@@ -242,10 +247,24 @@ header,
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 
   font-weight: 500;
 
   transition: 0.3s;
+}
+
+.login[hidden],
+.auth-greeting[hidden],
+.auth-logout[hidden] {
+  display: none !important;
+}
+
+.auth-greeting {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 button.login,
@@ -1804,6 +1823,11 @@ button.login,
 
   .login {
     font-size: 20px;
+  }
+
+  .auth-greeting {
+    max-width: 120px;
+    font-size: 14px;
   }
 
   .logo-img {

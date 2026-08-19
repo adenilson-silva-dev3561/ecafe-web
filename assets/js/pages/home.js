@@ -24,7 +24,6 @@ const ELEMENT_IDS = {
 
 const FEATURED_LIMIT = 12;
 const SEARCH_DEBOUNCE_MS = 300;
-
 const CATEGORY_IMAGES = {
   1: "catCafe.png",
   2: "catGraos.png",
@@ -41,15 +40,55 @@ let selectedCategoryName = null;
 let searchQuery = "";
 let productsRequestId = 0;
 let searchDebounceTimer = null;
+let homeBindingsReady = false;
+let homeDataPromise = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-  initAuthNav({ loginPath: "../../login.html" });
-  updateCartBadge();
-  bindClearFilter();
-  bindProductSearch();
-  loadCategories();
-  loadFeaturedProducts();
-});
+function setStatusVisibility({ loading, error, showLoading, showError }) {
+  if (loading) loading.hidden = !showLoading;
+  if (error) error.hidden = !showError;
+}
+
+async function loadHomeData() {
+  if (homeDataPromise) {
+    return homeDataPromise;
+  }
+
+  homeDataPromise = (async () => {
+    updateCartBadge();
+
+    await Promise.all([loadCategories(), loadFeaturedProducts()]);
+  })().finally(() => {
+    homeDataPromise = null;
+  });
+
+  return homeDataPromise;
+}
+
+function initHomePage() {
+  if (!homeBindingsReady) {
+    initAuthNav();
+    bindClearFilter();
+    bindProductSearch();
+    homeBindingsReady = true;
+  }
+}
+
+async function startHomePage() {
+  initHomePage();
+  await loadHomeData();
+
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      loadHomeData();
+    }
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startHomePage);
+} else {
+  startHomePage();
+}
 
 function bindClearFilter() {
   const clearButton = document.getElementById(ELEMENT_IDS.clearFilter);
@@ -116,25 +155,23 @@ async function loadCategories() {
   const loading = document.getElementById(ELEMENT_IDS.categoriesLoading);
   const error = document.getElementById(ELEMENT_IDS.categoriesError);
 
-  if (loading) loading.hidden = false;
-  if (error) error.hidden = true;
+  setStatusVisibility({ loading, error, showLoading: true, showError: false });
 
   try {
     const categories = await getAllCategories();
 
     if (!track || categories.length === 0) {
-      if (error) error.hidden = false;
+      setStatusVisibility({ loading, error, showLoading: false, showError: true });
       return;
     }
 
     track.innerHTML = categories.map(renderCategoryCard).join("");
     bindCategoryFilters(track, categories);
     document.dispatchEvent(new CustomEvent("ecafe:categories-loaded"));
+    setStatusVisibility({ loading, error, showLoading: false, showError: false });
   } catch (err) {
     console.error("Erro ao carregar categorias (home):", err);
-    if (error) error.hidden = false;
-  } finally {
-    if (loading) loading.hidden = true;
+    setStatusVisibility({ loading, error, showLoading: false, showError: true });
   }
 }
 
@@ -230,8 +267,7 @@ async function loadFeaturedProducts() {
   const empty = document.getElementById(ELEMENT_IDS.empty);
   const requestId = ++productsRequestId;
 
-  if (loading) loading.hidden = false;
-  if (error) error.hidden = true;
+  setStatusVisibility({ loading, error, showLoading: true, showError: false });
   if (empty) empty.hidden = true;
   if (list) list.innerHTML = "";
 
@@ -259,6 +295,7 @@ async function loadFeaturedProducts() {
             ? "Nenhum produto encontrado nesta categoria."
             : "Nenhum produto encontrado.";
       }
+      setStatusVisibility({ loading, error, showLoading: false, showError: false });
       return;
     }
 
@@ -279,13 +316,10 @@ async function loadFeaturedProducts() {
     }
 
     document.dispatchEvent(new CustomEvent("ecafe:featured-products-loaded"));
+    setStatusVisibility({ loading, error, showLoading: false, showError: false });
   } catch (err) {
     if (requestId !== productsRequestId) return;
     console.error("Erro ao carregar produtos (home):", err);
-    if (error) error.hidden = false;
-  } finally {
-    if (requestId === productsRequestId && loading) {
-      loading.hidden = true;
-    }
+    setStatusVisibility({ loading, error, showLoading: false, showError: true });
   }
 }

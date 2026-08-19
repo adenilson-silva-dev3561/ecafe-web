@@ -1,5 +1,7 @@
+import { getAccessToken } from "../services/authService.js";
+
 function isAuthenticated() {
-  return Boolean(localStorage.getItem('token'));
+  return Boolean(getAccessToken());
 }
 
 export { isAuthenticated };
