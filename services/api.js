@@ -34,14 +34,19 @@ function isPublicRequest(url, method = "GET") {
 }
 
 async function request(url, options = {}, attempt = 0) {
-  const headers = new Headers(options.headers || {});
-  const isPublic = isPublicRequest(url, options.method);
+  const { skipDefaultAccept = false, ...fetchOptions } = options;
+  const headers = new Headers(fetchOptions.headers || {});
+  const isPublic = isPublicRequest(url, fetchOptions.method);
 
-  if (!headers.has("Accept")) {
+  if (!skipDefaultAccept && !headers.has("Accept")) {
     headers.set("Accept", "application/json");
   }
 
-  const token = isPublic || (await ensureAuthReady()) ? getAccessToken() : null;
+  const token = isPublic
+    ? null
+    : (await ensureAuthReady())
+      ? getAccessToken()
+      : null;
   const requestSessionId = getSessionId();
 
   if (!isPublic && token) {
@@ -51,7 +56,7 @@ async function request(url, options = {}, attempt = 0) {
   }
 
   const response = await fetch(url, {
-    ...options,
+    ...fetchOptions,
     headers,
   });
 

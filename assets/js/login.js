@@ -2,8 +2,8 @@ import {
   getRememberedEmail,
   isLoggedIn,
   login as authenticate,
-  register as createAccount,
 } from "../../services/authService.js";
+import { createCustomer } from "../../services/customerService.js";
 
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
@@ -21,6 +21,7 @@ const rememberMe = document.getElementById("remember-me");
 const registerName = document.getElementById("register-name");
 const registerEmail = document.getElementById("register-email");
 const registerPassword = document.getElementById("register-password");
+const registerConfirm = document.getElementById("register-confirm");
 const loginError = document.getElementById("login-form-error");
 const registerError = document.getElementById("register-form-error");
 
@@ -59,9 +60,26 @@ function redirectToHome() {
 }
 
 function friendlyError(error, fallback) {
-  if (error?.status === 409) return "Já existe uma conta cadastrada com este e-mail.";
+  if (error?.status === 409) {
+    return "Este e-mail já está cadastrado. Tente entrar na sua conta ou utilize outro e-mail.";
+  }
   if (error?.errorCode === "invalid_grant") return "E-mail ou senha incorretos. Verifique seus dados e tente novamente.";
   return error?.message || fallback;
+}
+
+function validateRegisterForm() {
+  const name = registerName?.value.trim() || "";
+  const email = registerEmail?.value.trim() || "";
+  const password = registerPassword?.value || "";
+  const confirmPassword = registerConfirm?.value || "";
+
+  if (!name) return "Informe seu nome.";
+  if (!email) return "Informe seu e-mail.";
+  if (!registerEmail.validity.valid) return "Informe um e-mail válido.";
+  if (!password) return "Informe uma senha.";
+  if (!confirmPassword) return "Confirme sua senha.";
+  if (password !== confirmPassword) return "As senhas devem ser iguais.";
+  return "";
 }
 
 function setFormMode(mode) {
@@ -115,16 +133,27 @@ async function handleLoginSubmit(event) {
 
 async function handleRegisterSubmit(event) {
   event.preventDefault();
-  if (!registerForm?.checkValidity()) return registerForm?.reportValidity();
+  const validationError = validateRegisterForm();
+  if (validationError) {
+    setError(registerError, validationError);
+    return;
+  }
   setError(registerError, "");
   setLoading(registerForm, true, "Criar conta →", "Criando conta...");
   try {
-    const session = await createAccount(registerName.value, registerEmail.value.trim(), registerPassword.value);
-    if (session) return redirectToHome();
+    await createCustomer({
+      name: registerName.value.trim(),
+      email: registerEmail.value.trim(),
+      password: registerPassword.value,
+    });
     loginEmail.value = registerEmail.value.trim();
     loginPassword.value = "";
+    registerForm.reset();
     setFormMode("login");
-    setError(loginError, "Conta criada. Entre com sua senha para continuar.");
+    setError(
+      loginError,
+      "Conta criada com sucesso! Agora você já pode entrar com seu e-mail e senha.",
+    );
   } catch (error) {
     setError(registerError, friendlyError(error, "Não foi possível criar sua conta. Tente novamente."));
   } finally {
