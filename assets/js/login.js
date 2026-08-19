@@ -24,6 +24,36 @@ const registerPassword = document.getElementById("register-password");
 const registerConfirm = document.getElementById("register-confirm");
 const loginError = document.getElementById("login-form-error");
 const registerError = document.getElementById("register-form-error");
+const authToast = document.getElementById("auth-toast");
+const authToastMessage = authToast?.querySelector(".auth-toast__message");
+const authToastClose = authToast?.querySelector(".auth-toast__close");
+
+function showToast(message) {
+  if (!authToast || !authToastMessage) return;
+
+  authToastMessage.textContent = message;
+  authToast.classList.remove("is-visible", "is-closing");
+  void authToast.offsetWidth;
+  authToast.classList.add("is-visible");
+
+  clearTimeout(showToast.timeoutId);
+  showToast.timeoutId = window.setTimeout(() => {
+    authToast.classList.add("is-closing");
+    window.setTimeout(
+      () => authToast.classList.remove("is-visible", "is-closing"),
+      260,
+    );
+  }, 4200);
+}
+
+authToastClose?.addEventListener("click", () => {
+  clearTimeout(showToast.timeoutId);
+  authToast.classList.add("is-closing");
+  window.setTimeout(
+    () => authToast.classList.remove("is-visible", "is-closing"),
+    260,
+  );
+});
 
 function setError(element, message) {
   if (!element) return;
@@ -63,7 +93,8 @@ function friendlyError(error, fallback) {
   if (error?.status === 409) {
     return "Este e-mail já está cadastrado. Tente entrar na sua conta ou utilize outro e-mail.";
   }
-  if (error?.errorCode === "invalid_grant") return "E-mail ou senha incorretos. Verifique seus dados e tente novamente.";
+  if (error?.errorCode === "invalid_grant")
+    return "E-mail ou senha incorretos. Verifique seus dados e tente novamente.";
   return error?.message || fallback;
 }
 
@@ -97,7 +128,9 @@ function setFormMode(mode) {
   if (formsWrapper) formsWrapper.style.height = `${entering.scrollHeight}px`;
 
   formTitle.textContent = isRegister ? "Crie sua conta" : "Acesse sua conta";
-  formSubtitle.textContent = isRegister ? "Preencha seus dados para começar" : "Entre com seu e-mail e senha";
+  formSubtitle.textContent = isRegister
+    ? "Preencha seus dados para começar"
+    : "Entre com seu e-mail e senha";
   loginFooter?.classList.toggle("is-active", !isRegister);
   registerFooter?.classList.toggle("is-active", isRegister);
 
@@ -125,7 +158,13 @@ async function handleLoginSubmit(event) {
     );
     redirectToHome();
   } catch (error) {
-    setError(loginError, friendlyError(error, "Não foi possível realizar o login. Tente novamente."));
+    setError(
+      loginError,
+      friendlyError(
+        error,
+        "Não foi possível realizar o login. Tente novamente.",
+      ),
+    );
   } finally {
     setLoading(loginForm, false, "Entrar →", "Entrando...");
   }
@@ -150,12 +189,16 @@ async function handleRegisterSubmit(event) {
     loginPassword.value = "";
     registerForm.reset();
     setFormMode("login");
-    setError(
-      loginError,
-      "Conta criada com sucesso! Agora você já pode entrar com seu e-mail e senha.",
-    );
+    setError(loginError, "");
+    showToast("Conta criada com sucesso");
   } catch (error) {
-    setError(registerError, friendlyError(error, "Não foi possível criar sua conta. Tente novamente."));
+    setError(
+      registerError,
+      friendlyError(
+        error,
+        "Não foi possível criar sua conta. Tente novamente.",
+      ),
+    );
   } finally {
     setLoading(registerForm, false, "Criar conta →", "Criando conta...");
   }
@@ -169,22 +212,29 @@ function init() {
   }
 
   [loginForm, registerForm].forEach((form) => {
-    form?.querySelectorAll("input").forEach((field) => field.addEventListener("input", () => {
-      setError(form === loginForm ? loginError : registerError, "");
-      syncSubmitState(form);
-    }));
+    form?.querySelectorAll("input").forEach((field) =>
+      field.addEventListener("input", () => {
+        setError(form === loginForm ? loginError : registerError, "");
+        syncSubmitState(form);
+      }),
+    );
     syncSubmitState(form);
   });
 
-  document.querySelectorAll(".js-toggle-password").forEach((button) => button.addEventListener("click", () => {
-    const input = document.getElementById(button.dataset.target);
-    if (!input) return;
-    const showing = input.type === "password";
-    input.type = showing ? "text" : "password";
-    button.setAttribute("aria-label", showing ? "Ocultar senha" : "Mostrar senha");
-    button.querySelector("i")?.classList.toggle("fa-eye", showing);
-    button.querySelector("i")?.classList.toggle("fa-eye-slash", !showing);
-  }));
+  document.querySelectorAll(".js-toggle-password").forEach((button) =>
+    button.addEventListener("click", () => {
+      const input = document.getElementById(button.dataset.target);
+      if (!input) return;
+      const showing = input.type === "password";
+      input.type = showing ? "text" : "password";
+      button.setAttribute(
+        "aria-label",
+        showing ? "Ocultar senha" : "Mostrar senha",
+      );
+      button.querySelector("i")?.classList.toggle("fa-eye", showing);
+      button.querySelector("i")?.classList.toggle("fa-eye-slash", !showing);
+    }),
+  );
 
   loginForm?.addEventListener("submit", handleLoginSubmit);
   rememberMe?.addEventListener("change", syncRememberMeState);

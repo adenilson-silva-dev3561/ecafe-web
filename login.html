@@ -20,6 +20,21 @@
   </head>
 
   <body class="login-body">
+    <div class="auth-toast" id="auth-toast" role="status" aria-live="polite">
+      <i
+        class="fa-solid fa-circle-check auth-toast__icon"
+        aria-hidden="true"
+      ></i>
+      <span class="auth-toast__message"></span>
+      <button
+        class="auth-toast__close"
+        type="button"
+        aria-label="Fechar notificação"
+      >
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <span class="auth-toast__progress" aria-hidden="true"></span>
+    </div>
     <main class="login-page">
       <div class="login-layout">
         <section class="login-welcome" aria-label="Apresentação eCafe">
@@ -42,279 +57,291 @@
           </header>
 
           <div class="auth-forms-wrapper" id="auth-forms-wrapper">
-          <!-- Login -->
-          <form
-            class="login-form auth-form is-active"
-            id="login-form"
-            action="#"
-            method="post"
-            novalidate
-          >
-            <div class="login-field">
-              <label class="login-field__label" for="login-email">E-mail</label>
-              <div class="login-field__control">
-                <i
-                  class="fa-regular fa-envelope login-field__icon login-field__icon--left"
-                  aria-hidden="true"
-                ></i>
-                <input
-                  class="login-field__input"
-                  type="email"
-                  id="login-email"
-                  name="email"
-                  placeholder="seu@email.com"
-                  autocomplete="email"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="login-field">
-              <label class="login-field__label" for="login-password">Senha</label>
-              <div class="login-field__control">
-                <i
-                  class="fa-solid fa-lock login-field__icon login-field__icon--left"
-                  aria-hidden="true"
-                ></i>
-                <input
-                  class="login-field__input"
-                  type="password"
-                  id="login-password"
-                  name="password"
-                  placeholder="••••••••"
-                  autocomplete="current-password"
-                  required
-                />
-                <button
-                  type="button"
-                  class="login-field__icon login-field__icon--right js-toggle-password"
-                  data-target="login-password"
-                  aria-label="Mostrar senha"
+            <!-- Login -->
+            <form
+              class="login-form auth-form is-active"
+              id="login-form"
+              action="#"
+              method="post"
+              novalidate
+            >
+              <div class="login-field">
+                <label class="login-field__label" for="login-email"
+                  >E-mail</label
                 >
-                  <i class="fa-regular fa-eye-slash" aria-hidden="true"></i>
-                </button>
+                <div class="login-field__control">
+                  <i
+                    class="fa-regular fa-envelope login-field__icon login-field__icon--left"
+                    aria-hidden="true"
+                  ></i>
+                  <input
+                    class="login-field__input"
+                    type="email"
+                    id="login-email"
+                    name="email"
+                    placeholder="seu@email.com"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            <p
-              class="login-field__error"
-              id="login-form-error"
-              hidden
-              role="alert"
-            ></p>
-
-            <div class="login-form__options">
-              <label class="login-remember">
-                <input
-                  class="login-remember__input"
-                  type="checkbox"
-                  id="remember-me"
-                  name="remember"
-                />
-                <span class="login-remember__box" aria-hidden="true">
-                  <i class="fa-solid fa-check"></i>
-                </span>
-                <span class="login-remember__text">Lembrar de mim</span>
-              </label>
-              <a class="login-forgot" href="#">Esqueci minha senha</a>
-            </div>
-
-            <button class="login-submit" type="submit" disabled>
-              Entrar →
-            </button>
-
-            <div class="login-divider" role="separator">ou</div>
-
-            <button class="login-google" type="button">
-              <svg
-                class="login-google__icon"
-                viewBox="0 0 48 48"
-                aria-hidden="true"
-              >
-                <path
-                  fill="#FFC107"
-                  d="M43.611 20.083H42V20H24v8h11.303C33.654 32.657 29.083 36 24 36c-5.522 0-10-4.478-10-10s4.478-10 10-10c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 12.955 8 4 16.955 4 28s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
-                />
-                <path
-                  fill="#FF3D00"
-                  d="M6.306 14.691l6.571 4.819C14.655 16.108 18.961 12 24 12c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 16.318 8 9.656 13.337 6.306 14.691z"
-                />
-                <path
-                  fill="#4CAF50"
-                  d="M24 48c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 39.091 26.715 40 24 40c-5.052 0-9.372-3.343-10.812-7.946l-6.57 5.064C9.626 42.556 16.294 48 24 48z"
-                />
-                <path
-                  fill="#1976D2"
-                  d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.022 35.026 44 31.762 44 28c0-1.341-.138-2.65-.389-3.917z"
-                />
-              </svg>
-              Entrar com Google
-            </button>
-          </form>
-
-          <!-- Cadastro -->
-          <form
-            class="login-form auth-form"
-            id="register-form"
-            action="#"
-            method="post"
-            hidden
-            novalidate
-          >
-            <div class="login-field">
-              <label class="login-field__label" for="register-name"
-                >Nome completo</label
-              >
-              <div class="login-field__control">
-                <i
-                  class="fa-regular fa-user login-field__icon login-field__icon--left"
-                  aria-hidden="true"
-                ></i>
-                <input
-                  class="login-field__input"
-                  type="text"
-                  id="register-name"
-                  name="name"
-                  placeholder="Seu nome"
-                  autocomplete="name"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="login-field">
-              <label class="login-field__label" for="register-email"
-                >E-mail</label
-              >
-              <div class="login-field__control">
-                <i
-                  class="fa-regular fa-envelope login-field__icon login-field__icon--left"
-                  aria-hidden="true"
-                ></i>
-                <input
-                  class="login-field__input"
-                  type="email"
-                  id="register-email"
-                  name="email"
-                  placeholder="seu@email.com"
-                  autocomplete="email"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="login-field">
-              <label class="login-field__label" for="register-password"
-                >Senha</label
-              >
-              <div class="login-field__control">
-                <i
-                  class="fa-solid fa-lock login-field__icon login-field__icon--left"
-                  aria-hidden="true"
-                ></i>
-                <input
-                  class="login-field__input"
-                  type="password"
-                  id="register-password"
-                  name="password"
-                  placeholder="••••••••"
-                  autocomplete="new-password"
-                  minlength="6"
-                  required
-                />
-                <button
-                  type="button"
-                  class="login-field__icon login-field__icon--right js-toggle-password"
-                  data-target="register-password"
-                  aria-label="Mostrar senha"
+              <div class="login-field">
+                <label class="login-field__label" for="login-password"
+                  >Senha</label
                 >
-                  <i class="fa-regular fa-eye-slash" aria-hidden="true"></i>
-                </button>
+                <div class="login-field__control">
+                  <i
+                    class="fa-solid fa-lock login-field__icon login-field__icon--left"
+                    aria-hidden="true"
+                  ></i>
+                  <input
+                    class="login-field__input"
+                    type="password"
+                    id="login-password"
+                    name="password"
+                    placeholder="••••••••"
+                    autocomplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="login-field__icon login-field__icon--right js-toggle-password"
+                    data-target="login-password"
+                    aria-label="Mostrar senha"
+                  >
+                    <i class="fa-regular fa-eye-slash" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div class="login-field">
-              <label class="login-field__label" for="register-confirm"
-                >Confirmar senha</label
-              >
-              <div class="login-field__control">
-                <i
-                  class="fa-solid fa-lock login-field__icon login-field__icon--left"
-                  aria-hidden="true"
-                ></i>
-                <input
-                  class="login-field__input"
-                  type="password"
-                  id="register-confirm"
-                  name="confirmPassword"
-                  placeholder="••••••••"
-                  autocomplete="new-password"
-                  minlength="6"
-                  required
-                />
-                <button
-                  type="button"
-                  class="login-field__icon login-field__icon--right js-toggle-password"
-                  data-target="register-confirm"
-                  aria-label="Mostrar senha"
-                >
-                  <i class="fa-regular fa-eye-slash" aria-hidden="true"></i>
-                </button>
-              </div>
               <p
                 class="login-field__error"
-                id="register-form-error"
+                id="login-form-error"
                 hidden
                 role="alert"
-              >
-                As senhas devem ser iguais.
-              </p>
-            </div>
+              ></p>
 
-            <button class="login-submit" type="submit" disabled>
-              Criar conta →
-            </button>
+              <div class="login-form__options">
+                <label class="login-remember">
+                  <input
+                    class="login-remember__input"
+                    type="checkbox"
+                    id="remember-me"
+                    name="remember"
+                  />
+                  <span class="login-remember__box" aria-hidden="true">
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                  <span class="login-remember__text">Lembrar de mim</span>
+                </label>
+                <a class="login-forgot" href="#">Esqueci minha senha</a>
+              </div>
 
-            <div class="login-divider" role="separator">ou</div>
+              <button class="login-submit" type="submit" disabled>
+                Entrar →
+              </button>
 
-            <button class="login-google" type="button">
-              <svg
-                class="login-google__icon"
-                viewBox="0 0 48 48"
-                aria-hidden="true"
-              >
-                <path
-                  fill="#FFC107"
-                  d="M43.611 20.083H42V20H24v8h11.303C33.654 32.657 29.083 36 24 36c-5.522 0-10-4.478-10-10s4.478-10 10-10c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 12.955 8 4 16.955 4 28s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
-                />
-                <path
-                  fill="#FF3D00"
-                  d="M6.306 14.691l6.571 4.819C14.655 16.108 18.961 12 24 12c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 16.318 8 9.656 13.337 6.306 14.691z"
-                />
-                <path
-                  fill="#4CAF50"
-                  d="M24 48c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 39.091 26.715 40 24 40c-5.052 0-9.372-3.343-10.812-7.946l-6.57 5.064C9.626 42.556 16.294 48 24 48z"
-                />
-                <path
-                  fill="#1976D2"
-                  d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.022 35.026 44 31.762 44 28c0-1.341-.138-2.65-.389-3.917z"
-                />
-              </svg>
-              Cadastrar com Google
-            </button>
-          </form>
+              <div class="login-divider" role="separator">ou</div>
+
+              <button class="login-google" type="button">
+                <svg
+                  class="login-google__icon"
+                  viewBox="0 0 48 48"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="#FFC107"
+                    d="M43.611 20.083H42V20H24v8h11.303C33.654 32.657 29.083 36 24 36c-5.522 0-10-4.478-10-10s4.478-10 10-10c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 12.955 8 4 16.955 4 28s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
+                  />
+                  <path
+                    fill="#FF3D00"
+                    d="M6.306 14.691l6.571 4.819C14.655 16.108 18.961 12 24 12c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 16.318 8 9.656 13.337 6.306 14.691z"
+                  />
+                  <path
+                    fill="#4CAF50"
+                    d="M24 48c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 39.091 26.715 40 24 40c-5.052 0-9.372-3.343-10.812-7.946l-6.57 5.064C9.626 42.556 16.294 48 24 48z"
+                  />
+                  <path
+                    fill="#1976D2"
+                    d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.022 35.026 44 31.762 44 28c0-1.341-.138-2.65-.389-3.917z"
+                  />
+                </svg>
+                Entrar com Google
+              </button>
+            </form>
+
+            <!-- Cadastro -->
+            <form
+              class="login-form auth-form"
+              id="register-form"
+              action="#"
+              method="post"
+              hidden
+              novalidate
+            >
+              <div class="login-field">
+                <label class="login-field__label" for="register-name"
+                  >Nome completo</label
+                >
+                <div class="login-field__control">
+                  <i
+                    class="fa-regular fa-user login-field__icon login-field__icon--left"
+                    aria-hidden="true"
+                  ></i>
+                  <input
+                    class="login-field__input"
+                    type="text"
+                    id="register-name"
+                    name="name"
+                    placeholder="Seu nome"
+                    autocomplete="name"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="login-field">
+                <label class="login-field__label" for="register-email"
+                  >E-mail</label
+                >
+                <div class="login-field__control">
+                  <i
+                    class="fa-regular fa-envelope login-field__icon login-field__icon--left"
+                    aria-hidden="true"
+                  ></i>
+                  <input
+                    class="login-field__input"
+                    type="email"
+                    id="register-email"
+                    name="email"
+                    placeholder="seu@email.com"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="login-field">
+                <label class="login-field__label" for="register-password"
+                  >Senha</label
+                >
+                <div class="login-field__control">
+                  <i
+                    class="fa-solid fa-lock login-field__icon login-field__icon--left"
+                    aria-hidden="true"
+                  ></i>
+                  <input
+                    class="login-field__input"
+                    type="password"
+                    id="register-password"
+                    name="password"
+                    placeholder="••••••••"
+                    autocomplete="new-password"
+                    minlength="6"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="login-field__icon login-field__icon--right js-toggle-password"
+                    data-target="register-password"
+                    aria-label="Mostrar senha"
+                  >
+                    <i class="fa-regular fa-eye-slash" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="login-field">
+                <label class="login-field__label" for="register-confirm"
+                  >Confirmar senha</label
+                >
+                <div class="login-field__control">
+                  <i
+                    class="fa-solid fa-lock login-field__icon login-field__icon--left"
+                    aria-hidden="true"
+                  ></i>
+                  <input
+                    class="login-field__input"
+                    type="password"
+                    id="register-confirm"
+                    name="confirmPassword"
+                    placeholder="••••••••"
+                    autocomplete="new-password"
+                    minlength="6"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="login-field__icon login-field__icon--right js-toggle-password"
+                    data-target="register-confirm"
+                    aria-label="Mostrar senha"
+                  >
+                    <i class="fa-regular fa-eye-slash" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <p
+                  class="login-field__error"
+                  id="register-form-error"
+                  hidden
+                  role="alert"
+                >
+                  As senhas devem ser iguais.
+                </p>
+              </div>
+
+              <button class="login-submit" type="submit" disabled>
+                Criar conta →
+              </button>
+
+              <div class="login-divider" role="separator">ou</div>
+
+              <button class="login-google" type="button">
+                <svg
+                  class="login-google__icon"
+                  viewBox="0 0 48 48"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="#FFC107"
+                    d="M43.611 20.083H42V20H24v8h11.303C33.654 32.657 29.083 36 24 36c-5.522 0-10-4.478-10-10s4.478-10 10-10c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 12.955 8 4 16.955 4 28s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
+                  />
+                  <path
+                    fill="#FF3D00"
+                    d="M6.306 14.691l6.571 4.819C14.655 16.108 18.961 12 24 12c2.837 0 5.352 1.192 7.167 3.111l5.657-5.657C33.64 10.053 29.082 8 24 8 16.318 8 9.656 13.337 6.306 14.691z"
+                  />
+                  <path
+                    fill="#4CAF50"
+                    d="M24 48c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 39.091 26.715 40 24 40c-5.052 0-9.372-3.343-10.812-7.946l-6.57 5.064C9.626 42.556 16.294 48 24 48z"
+                  />
+                  <path
+                    fill="#1976D2"
+                    d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.022 35.026 44 31.762 44 28c0-1.341-.138-2.65-.389-3.917z"
+                  />
+                </svg>
+                Cadastrar com Google
+              </button>
+            </form>
           </div>
 
           <p class="login-form-card__footer is-active" id="form-footer-login">
             Ainda não possui uma conta?
-            <button type="button" class="login-form-card__toggle" id="show-register">
+            <button
+              type="button"
+              class="login-form-card__toggle"
+              id="show-register"
+            >
               Criar conta
             </button>
           </p>
 
           <p class="login-form-card__footer" id="form-footer-register">
             Já possui uma conta?
-            <button type="button" class="login-form-card__toggle" id="show-login">
+            <button
+              type="button"
+              class="login-form-card__toggle"
+              id="show-login"
+            >
               Entrar
             </button>
           </p>

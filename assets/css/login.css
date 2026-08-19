@@ -49,6 +49,34 @@
   }
 }
 
+@keyframes auth-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes auth-toast-exit {
+  to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+}
+
+@keyframes auth-toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -93,6 +121,77 @@ body.login-body {
   font-family: "Inter", sans-serif;
   background: #ffffff;
   color: var(--login-text);
+}
+
+.auth-toast {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(420px, calc(100vw - 32px));
+  min-height: 64px;
+  padding: 16px 48px 16px 18px;
+  overflow: hidden;
+  border: 1px solid rgba(111, 168, 79, 0.2);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--login-text);
+  box-shadow: 0 18px 42px rgba(61, 39, 35, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-18px) scale(0.97);
+}
+
+.auth-toast.is-visible {
+  pointer-events: auto;
+  animation: auth-toast-enter 0.35s var(--login-ease) forwards;
+}
+
+.auth-toast.is-closing {
+  animation: auth-toast-exit 0.26s ease forwards;
+}
+
+.auth-toast__icon {
+  flex: 0 0 auto;
+  color: var(--login-green);
+  font-size: 20px;
+}
+
+.auth-toast__message {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.auth-toast__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--login-muted);
+  cursor: pointer;
+}
+
+.auth-toast__progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: var(--login-green);
+  transform-origin: right;
+}
+
+.auth-toast.is-visible .auth-toast__progress {
+  animation: auth-toast-progress 4.2s linear forwards;
 }
 
 .login-page {
@@ -725,5 +824,21 @@ body.login-body {
   .login-form-card::before {
     animation: none;
     background: linear-gradient(135deg, #6fa84f, #b8db9a, #6fa84f);
+  }
+
+  .auth-toast,
+  .auth-toast.is-visible,
+  .auth-toast.is-closing,
+  .auth-toast.is-visible .auth-toast__progress {
+    animation: none;
+  }
+
+  .auth-toast.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .auth-toast.is-closing {
+    opacity: 0;
   }
 }
