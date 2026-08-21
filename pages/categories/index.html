@@ -10,5 +10,9 @@
     <main>
       <h1>Categories Page</h1>
     </main>
+    <script type="module">
+      import { requireAuthentication } from "../../guards/authGuard.js";
+      requireAuthentication();
+    </script>
   </body>
 </html>

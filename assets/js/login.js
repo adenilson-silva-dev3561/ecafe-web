@@ -1,4 +1,5 @@
 import {
+  AUTH_FEEDBACK_KEY,
   getRememberedEmail,
   isLoggedIn,
   login as authenticate,
@@ -205,6 +206,12 @@ async function handleRegisterSubmit(event) {
 }
 
 function init() {
+  const authFeedback = sessionStorage.getItem(AUTH_FEEDBACK_KEY);
+  if (authFeedback) {
+    sessionStorage.removeItem(AUTH_FEEDBACK_KEY);
+    showToast(authFeedback);
+  }
+
   const rememberedEmail = getRememberedEmail();
   if (rememberedEmail && loginEmail && rememberMe) {
     loginEmail.value = rememberedEmail;

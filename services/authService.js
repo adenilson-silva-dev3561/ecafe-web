@@ -1,5 +1,6 @@
 const SESSION_KEY = "ecafe_session";
 const REMEMBERED_EMAIL_KEY = "ecafe_remembered_email";
+const AUTH_FEEDBACK_KEY = "ecafe_auth_feedback";
 const API_BASE = window.ECAFE_API_BASE || "http://localhost:8080/api/v1";
 const TOKEN_REFRESH_SKEW_MS = 30_000;
 
@@ -263,8 +264,6 @@ async function refreshSession() {
   }).catch(() => null);
 
   if (!response?.ok) {
-    clearAuthState();
-    notifyAuthChanged(false);
     return false;
   }
 
@@ -273,8 +272,6 @@ async function refreshSession() {
   );
 
   if (!data.accessToken) {
-    clearAuthState();
-    notifyAuthChanged(false);
     return false;
   }
 
@@ -460,6 +457,7 @@ async function register(name, email, password) {
 export {
   AuthError,
   clearAuthState,
+  AUTH_FEEDBACK_KEY,
   ensureAuthReady,
   getSession,
   getAccessToken,
@@ -470,5 +468,6 @@ export {
   isLoggedIn,
   login,
   logout,
+  refreshSession,
   register,
 };

@@ -1916,6 +1916,11 @@ button.login,
   .cart {
     font-size: 22px;
   }
+
+  .logo-img {
+    width: 90px;
+    height: auto;
+  }
 }
 
 /* ================= BENEFÍCIOS (faixa) ================= */
@@ -2083,7 +2088,9 @@ body.about-panel-open {
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .about-panel-close:hover {

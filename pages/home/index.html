@@ -493,6 +493,10 @@
 
     <script src="../../assets/js/header.js"></script>
     <script src="../../assets/js/siteNav.js"></script>
+    <script type="module">
+      import { requireAuthentication } from "../../guards/authGuard.js";
+      requireAuthentication();
+    </script>
     <script src="../../assets/js/main.js"></script>
     <script type="module" src="../../assets/js/pages/home.js"></script>
   </body>

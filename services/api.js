@@ -2,16 +2,14 @@ import {
   ensureAuthReady,
   getAccessToken,
   getSessionId,
+  logout,
+  refreshSession,
+  AUTH_FEEDBACK_KEY,
 } from "./authService.js";
 
-const FRESH_LOGIN_MAX_RETRIES = 3;
-const FRESH_LOGIN_RETRY_DELAY_MS = 400;
-
-function wait(ms) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, ms);
-  });
-}
+const SESSION_EXPIRED_MESSAGE = "Sua sessão expirou. Faça login novamente.";
+let refreshPromise = null;
+let sessionExpirationPromise = null;
 
 function isPublicRequest(url, method = "GET") {
   const requestUrl = new URL(url, window.location.origin);
@@ -33,7 +31,38 @@ function isPublicRequest(url, method = "GET") {
   );
 }
 
-async function request(url, options = {}, attempt = 0) {
+function isAuthenticationRequest(url) {
+  const pathname = new URL(url, window.location.origin).pathname.replace(/\/$/, "");
+  return pathname.endsWith("/auth/login") || pathname.endsWith("/auth/refresh");
+}
+
+async function expireSession(showMessage = true) {
+  if (sessionExpirationPromise) return sessionExpirationPromise;
+
+  sessionExpirationPromise = (async () => {
+    if (showMessage) {
+      sessionStorage.setItem(AUTH_FEEDBACK_KEY, SESSION_EXPIRED_MESSAGE);
+    }
+    await logout();
+    window.location.replace(new URL("../login.html", import.meta.url).href);
+  })().finally(() => {
+    sessionExpirationPromise = null;
+  });
+
+  return sessionExpirationPromise;
+}
+
+async function refreshAccessToken() {
+  if (!refreshPromise) {
+    refreshPromise = refreshSession().finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  return refreshPromise;
+}
+
+async function request(url, options = {}, hasRetried = false) {
   const { skipDefaultAccept = false, ...fetchOptions } = options;
   const headers = new Headers(fetchOptions.headers || {});
   const isPublic = isPublicRequest(url, fetchOptions.method);
@@ -42,11 +71,8 @@ async function request(url, options = {}, attempt = 0) {
     headers.set("Accept", "application/json");
   }
 
-  const token = isPublic
-    ? null
-    : (await ensureAuthReady())
-      ? getAccessToken()
-      : null;
+  const authReady = isPublic ? true : await ensureAuthReady();
+  const token = !isPublic && authReady ? getAccessToken() : null;
   const requestSessionId = getSessionId();
 
   if (!isPublic && token) {
@@ -60,20 +86,17 @@ async function request(url, options = {}, attempt = 0) {
     headers,
   });
 
-  const isFreshLogin = sessionStorage.getItem("ecafe_fresh_login") === "1";
-
-  if (
-    response.status === 401 &&
-    !isPublic &&
-    token &&
-    isFreshLogin &&
-    attempt < FRESH_LOGIN_MAX_RETRIES
-  ) {
-    await wait(FRESH_LOGIN_RETRY_DELAY_MS);
-    return request(url, options, attempt + 1);
-  }
-
   if (response.status === 401) {
+    if (!isPublic && !hasRetried && !isAuthenticationRequest(url)) {
+      const refreshed = token ? await refreshAccessToken() : false;
+
+      if (refreshed) {
+        return request(url, options, true);
+      }
+
+      await expireSession();
+    }
+
     const text = await response.text().catch(() => "");
     const error = new Error(
       text
@@ -106,4 +129,4 @@ async function request(url, options = {}, attempt = 0) {
   return null;
 }
 
-export { request };
+export { expireSession, request };
