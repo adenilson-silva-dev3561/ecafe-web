@@ -40,8 +40,7 @@ function notifyAuthChanged(isLoggedIn) {
 function getSession() {
   try {
     const raw =
-      localStorage.getItem(SESSION_KEY) ||
-      sessionStorage.getItem(SESSION_KEY);
+      localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -93,8 +92,16 @@ function generateSessionId() {
 
 function normalizeAuthResponse(data = {}) {
   return {
-    accessToken:
-      data.accessToken || data.access_token || data.token || "",
+    customerId:
+      data.customerId ??
+      data.customer_id ??
+      data.user?.customerId ??
+      data.user?.customer_id ??
+      data.user?.id ??
+      data.customer?.id ??
+      data.id ??
+      null,
+    accessToken: data.accessToken || data.access_token || data.token || "",
     refreshToken: data.refreshToken || data.refresh_token || null,
     expiresIn: Number(data.expiresIn ?? data.expires_in) || 300,
     displayName:
@@ -128,8 +135,10 @@ function getTokenClaims(token) {
 
     const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
     const json = decodeURIComponent(
-      Array.from(atob(base64), (character) =>
-        `%${character.charCodeAt(0).toString(16).padStart(2, "0")}`,
+      Array.from(
+        atob(base64),
+        (character) =>
+          `%${character.charCodeAt(0).toString(16).padStart(2, "0")}`,
       ).join(""),
     );
 
@@ -155,7 +164,7 @@ function resolveDisplayName(session) {
 function hasUsableAccessToken(session, skewMs = 0) {
   return Boolean(
     session?.accessToken?.trim() &&
-      (!session.expiresAt || Date.now() < session.expiresAt - skewMs),
+    (!session.expiresAt || Date.now() < session.expiresAt - skewMs),
   );
 }
 
@@ -181,6 +190,25 @@ function getRefreshToken() {
 
 function getSessionId() {
   return getSession()?.sessionId || null;
+}
+
+function getAuthenticatedUserId() {
+  const session = getSession();
+  const claims = getTokenClaims(session?.accessToken);
+  const id =
+    session?.customerId ??
+    session?.customer_id ??
+    session?.userId ??
+    session?.user_id ??
+    claims?.customerId ??
+    claims?.customer_id ??
+    claims?.userId ??
+    claims?.user_id ??
+    claims?.customer?.id ??
+    claims?.id ??
+    claims?.sub;
+
+  return id === null || id === undefined || id === "" ? null : String(id);
 }
 
 function isLoggedIn() {
@@ -213,12 +241,7 @@ function extractErrorCode(payload) {
     return null;
   }
 
-  return (
-    payload.error ||
-    payload.errorCode ||
-    payload.code ||
-    null
-  );
+  return payload.error || payload.errorCode || payload.code || null;
 }
 
 function isInvalidCredentialsError(status, payload, rawText = "") {
@@ -245,7 +268,7 @@ function isInvalidCredentialsError(status, payload, rawText = "") {
   return false;
 }
 
-async function refreshSession() {
+async function performRefreshSession() {
   const session = getSession();
   const refreshToken = session?.refreshToken?.trim();
 
@@ -275,18 +298,45 @@ async function refreshSession() {
     return false;
   }
 
-  saveSession({
-    ...session,
-    accessToken: data.accessToken,
-    refreshToken: data.refreshToken || refreshToken,
-    expiresIn: data.expiresIn,
-    expiresAt: Date.now() + data.expiresIn * 1000,
-    displayName:
-      data.displayName ||
-      resolveDisplayName({ ...session, accessToken: data.accessToken }),
-  }, Boolean(localStorage.getItem(SESSION_KEY)));
+  saveSession(
+    {
+      ...session,
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken || refreshToken,
+      expiresIn: data.expiresIn,
+      expiresAt: Date.now() + data.expiresIn * 1000,
+      displayName:
+        data.displayName ||
+        resolveDisplayName({ ...session, accessToken: data.accessToken }),
+    },
+    Boolean(localStorage.getItem(SESSION_KEY)),
+  );
+
+  console.log(
+    `[TEMP] Access token renovado com sucesso em ${new Date().toLocaleTimeString()}`,
+  );
 
   return true;
+}
+
+async function refreshSession(expectedAccessToken = null) {
+  const currentAccessToken = getSession()?.accessToken?.trim();
+
+  if (
+    expectedAccessToken &&
+    currentAccessToken &&
+    currentAccessToken !== expectedAccessToken
+  ) {
+    return true;
+  }
+
+  if (!refreshPromise) {
+    refreshPromise = performRefreshSession().finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  return refreshPromise;
 }
 
 async function ensureAuthReady() {
@@ -300,13 +350,7 @@ async function ensureAuthReady() {
     return true;
   }
 
-  if (!refreshPromise) {
-    refreshPromise = refreshSession().finally(() => {
-      refreshPromise = null;
-    });
-  }
-
-  return refreshPromise;
+  return refreshSession();
 }
 
 async function revokeServerSession(session) {
@@ -397,6 +441,7 @@ async function login(email, password, rememberMe = false) {
 
   const session = {
     sessionId: generateSessionId(),
+    customerId: data.customerId,
     email: normalizedEmail,
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
@@ -430,7 +475,8 @@ async function register(name, email, password) {
 
   if (!response.ok) {
     throw new AuthError(
-      responseData?.message || "Não foi possível criar sua conta. Tente novamente.",
+      responseData?.message ||
+        "Não foi possível criar sua conta. Tente novamente.",
       response.status,
       errorCode,
     );
@@ -441,6 +487,7 @@ async function register(name, email, password) {
 
   const session = {
     sessionId: generateSessionId(),
+    customerId: data.customerId,
     email: String(email || "").trim(),
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
@@ -464,6 +511,7 @@ export {
   getRefreshToken,
   getRememberedEmail,
   getSessionId,
+  getAuthenticatedUserId,
   resolveDisplayName,
   isLoggedIn,
   login,

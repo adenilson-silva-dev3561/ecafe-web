@@ -10,6 +10,38 @@ class CustomerError extends Error {
   }
 }
 
+async function getCurrentCustomer() {
+  try {
+    return await request(`${API_BASE}/customers/me`);
+  } catch (error) {
+    throw new CustomerError(
+      error?.status === 404
+        ? "Não foi possível encontrar os dados do seu perfil."
+        : "Não foi possível carregar seus dados. Tente novamente.",
+      error?.status,
+    );
+  }
+}
+
+async function updateCustomerById(id, customer) {
+  if (id === null || id === undefined || id === "") {
+    throw new CustomerError("Não foi possível identificar seu perfil.", 400);
+  }
+
+  try {
+    return await request(`${API_BASE}/customers/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(customer),
+    });
+  } catch (error) {
+    throw new CustomerError(
+      "Não foi possível salvar seus dados. Tente novamente.",
+      error?.status,
+    );
+  }
+}
+
 async function createCustomer({ name, email, password }) {
   try {
     return await request(`${API_BASE}/customers`, {
@@ -39,4 +71,9 @@ async function createCustomer({ name, email, password }) {
   }
 }
 
-export { CustomerError, createCustomer };
+export {
+  CustomerError,
+  createCustomer,
+  getCurrentCustomer,
+  updateCustomerById,
+};

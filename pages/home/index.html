@@ -113,13 +113,52 @@
               <span> Entrar </span>
             </a>
 
-            <span class="login auth-greeting" id="auth-greeting" hidden></span>
+            <div class="account-menu" id="account-menu" hidden>
+              <button
+                type="button"
+                class="account-trigger"
+                id="account-trigger"
+                aria-expanded="false"
+                aria-controls="account-dropdown"
+              >
+                <span class="account-avatar"
+                  ><i class="fa-regular fa-user"></i
+                ></span>
+                <span class="auth-greeting" id="auth-greeting"></span>
+                <i
+                  class="fa-solid fa-chevron-down account-chevron"
+                  aria-hidden="true"
+                ></i>
+              </button>
 
-            <button type="button" class="login auth-logout" id="auth-logout" hidden>
-              <i class="fa-solid fa-right-from-bracket"></i>
-
-              <span> Sair </span>
-            </button>
+              <div class="account-dropdown" id="account-dropdown" hidden>
+                <div class="account-dropdown-heading">
+                  <span class="account-avatar account-avatar--small"
+                    ><i class="fa-regular fa-user"></i
+                  ></span>
+                  <div>
+                    <strong>Minha conta</strong>
+                    <span id="account-dropdown-email">Área do cliente</span>
+                  </div>
+                </div>
+                <a href="../profile/index.html" class="account-dropdown-link">
+                  <i class="fa-regular fa-id-card"></i>
+                  <span>Meu perfil</span>
+                </a>
+                <a href="../cart.html" class="account-dropdown-link">
+                  <i class="fa-solid fa-bag-shopping"></i>
+                  <span>Minhas compras</span>
+                </a>
+                <button
+                  type="button"
+                  class="account-dropdown-link account-logout"
+                  id="auth-logout"
+                >
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  <span>Sair</span>
+                </button>
+              </div>
+            </div>
 
             <!-- Carrinho -->
 
@@ -248,7 +287,9 @@
           <div class="featured-products">
             <p class="featured-subtitle">PRODUTOS EM DESTAQUE</p>
             <div class="featured-heading-row">
-              <h2 class="featured-title" id="featured-title">Os mais vendidos</h2>
+              <h2 class="featured-title" id="featured-title">
+                Os mais vendidos
+              </h2>
               <button
                 type="button"
                 class="featured-clear-filter"
@@ -262,11 +303,19 @@
             <p class="featured-products-status" id="featured-product-loading">
               Carregando produtos...
             </p>
-            <p class="featured-products-status" id="featured-product-error" hidden>
+            <p
+              class="featured-products-status"
+              id="featured-product-error"
+              hidden
+            >
               Não foi possível carregar os produtos. Verifique a API e tente
               novamente.
             </p>
-            <p class="featured-products-status" id="featured-product-empty" hidden>
+            <p
+              class="featured-products-status"
+              id="featured-product-empty"
+              hidden
+            >
               Nenhum produto encontrado.
             </p>
 

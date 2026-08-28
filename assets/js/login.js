@@ -5,6 +5,7 @@ import {
   login as authenticate,
 } from "../../services/authService.js";
 import { createCustomer } from "../../services/customerService.js";
+import { setupToast } from "./utils/toast.js";
 
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
@@ -26,35 +27,7 @@ const registerConfirm = document.getElementById("register-confirm");
 const loginError = document.getElementById("login-form-error");
 const registerError = document.getElementById("register-form-error");
 const authToast = document.getElementById("auth-toast");
-const authToastMessage = authToast?.querySelector(".auth-toast__message");
-const authToastClose = authToast?.querySelector(".auth-toast__close");
-
-function showToast(message) {
-  if (!authToast || !authToastMessage) return;
-
-  authToastMessage.textContent = message;
-  authToast.classList.remove("is-visible", "is-closing");
-  void authToast.offsetWidth;
-  authToast.classList.add("is-visible");
-
-  clearTimeout(showToast.timeoutId);
-  showToast.timeoutId = window.setTimeout(() => {
-    authToast.classList.add("is-closing");
-    window.setTimeout(
-      () => authToast.classList.remove("is-visible", "is-closing"),
-      260,
-    );
-  }, 4200);
-}
-
-authToastClose?.addEventListener("click", () => {
-  clearTimeout(showToast.timeoutId);
-  authToast.classList.add("is-closing");
-  window.setTimeout(
-    () => authToast.classList.remove("is-visible", "is-closing"),
-    260,
-  );
-});
+const showToast = setupToast(authToast);
 
 function setError(element, message) {
   if (!element) return;

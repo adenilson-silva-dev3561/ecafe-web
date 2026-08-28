@@ -8,7 +8,6 @@ import {
 } from "./authService.js";
 
 const SESSION_EXPIRED_MESSAGE = "Sua sessão expirou. Faça login novamente.";
-let refreshPromise = null;
 let sessionExpirationPromise = null;
 
 function isPublicRequest(url, method = "GET") {
@@ -32,7 +31,10 @@ function isPublicRequest(url, method = "GET") {
 }
 
 function isAuthenticationRequest(url) {
-  const pathname = new URL(url, window.location.origin).pathname.replace(/\/$/, "");
+  const pathname = new URL(url, window.location.origin).pathname.replace(
+    /\/$/,
+    "",
+  );
   return pathname.endsWith("/auth/login") || pathname.endsWith("/auth/refresh");
 }
 
@@ -50,16 +52,6 @@ async function expireSession(showMessage = true) {
   });
 
   return sessionExpirationPromise;
-}
-
-async function refreshAccessToken() {
-  if (!refreshPromise) {
-    refreshPromise = refreshSession().finally(() => {
-      refreshPromise = null;
-    });
-  }
-
-  return refreshPromise;
 }
 
 async function request(url, options = {}, hasRetried = false) {
@@ -88,7 +80,7 @@ async function request(url, options = {}, hasRetried = false) {
 
   if (response.status === 401) {
     if (!isPublic && !hasRetried && !isAuthenticationRequest(url)) {
-      const refreshed = token ? await refreshAccessToken() : false;
+      const refreshed = token ? await refreshSession(token) : false;
 
       if (refreshed) {
         return request(url, options, true);

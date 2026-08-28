@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu perfil - eCafe</title>
+
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+    <link rel="stylesheet" href="../../assets/css/profile.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body class="profile-page">
+    <header>
+      <div class="top-bar">
+        <div class="container top-bar-content">
+          <div class="top-left">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>Frete grátis para compras acima de R$199,00</span>
+          </div>
+          <div class="top-right">
+            <a href="#"><i class="fa-solid fa-headset"></i> Atendimento</a>
+            <a
+              href="https://wa.me/553332215867"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="fa-brands fa-whatsapp"></i> (33) 3221-5867
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-nav">
+        <div class="container nav-inner">
+          <a href="../../index.html" class="logo" aria-label="Logo eCafe">
+            <img
+              src="../../assets/images/logo.png"
+              alt="Logo eCafe"
+              class="logo-img"
+            />
+          </a>
+          <nav class="nav-links" aria-label="Menu principal">
+            <a href="../../index.html">Início</a>
+            <a href="#produtos" data-action="products">Produtos</a>
+            <a href="#categorias" data-action="categories">Categorias</a>
+            <a href="#sobre-nos" data-action="about">Sobre nós</a>
+            <a href="#contato" data-action="contact">Contato</a>
+          </nav>
+          <div class="nav-actions">
+            <a href="../../login.html" class="login" id="auth-login" hidden
+              ><i class="fa-regular fa-user"></i><span>Entrar</span></a
+            >
+            <div class="account-menu" id="account-menu" hidden>
+              <button
+                type="button"
+                class="account-trigger"
+                id="account-trigger"
+                aria-expanded="false"
+                aria-controls="account-dropdown"
+              >
+                <span class="account-avatar"
+                  ><i class="fa-regular fa-user"></i
+                ></span>
+                <span class="auth-greeting" id="auth-greeting"></span>
+                <i
+                  class="fa-solid fa-chevron-down account-chevron"
+                  aria-hidden="true"
+                ></i>
+              </button>
+              <div class="account-dropdown" id="account-dropdown" hidden>
+                <div class="account-dropdown-heading">
+                  <span class="account-avatar account-avatar--small"
+                    ><i class="fa-regular fa-user"></i
+                  ></span>
+                  <div>
+                    <strong>Minha conta</strong><span>Área do cliente</span>
+                  </div>
+                </div>
+                <a href="index.html" class="account-dropdown-link"
+                  ><i class="fa-regular fa-id-card"></i
+                  ><span>Meu perfil</span></a
+                >
+                <a href="../cart.html" class="account-dropdown-link"
+                  ><i class="fa-solid fa-bag-shopping"></i
+                  ><span>Minhas compras</span></a
+                >
+                <button
+                  type="button"
+                  class="account-dropdown-link account-logout"
+                  id="auth-logout"
+                >
+                  <i class="fa-solid fa-right-from-bracket"></i
+                  ><span>Sair</span>
+                </button>
+              </div>
+            </div>
+            <a href="../cart.html" class="cart" aria-label="Carrinho">
+              <i class="fa-solid fa-cart-shopping"></i
+              ><span class="badge" hidden>0</span>
+            </a>
+            <button class="hamburger" type="button" aria-label="Abrir menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container profile-main">
+      <nav class="profile-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../../index.html">Início</a></li>
+          <li aria-current="page">Meu perfil</li>
+        </ol>
+      </nav>
+
+      <section class="profile-intro">
+        <div>
+          <p class="profile-eyebrow">Área do cliente</p>
+          <h1>Meu perfil</h1>
+          <p>Gerencie seus dados pessoais</p>
+        </div>
+        <div class="profile-intro-icon" aria-hidden="true">
+          <i class="fa-regular fa-user"></i>
+        </div>
+      </section>
+
+      <section class="profile-card" aria-labelledby="personal-data-title">
+        <div class="profile-card-header">
+          <div>
+            <p class="profile-card-kicker">Cadastro</p>
+            <h2 id="personal-data-title">Dados pessoais</h2>
+          </div>
+          <span class="profile-mode-label" id="profile-mode-label"
+            >Visualização</span
+          >
+        </div>
+
+        <form id="profile-form" novalidate>
+          <div class="profile-fields">
+            <div class="profile-field profile-field--wide">
+              <span class="profile-label">Nome</span>
+              <span class="profile-value" data-display="name"></span>
+              <input
+                class="profile-input"
+                data-field="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+              />
+              <small class="profile-error" data-error="name"></small>
+            </div>
+            <div class="profile-field profile-field--wide">
+              <span class="profile-label">E-mail</span>
+              <span class="profile-value" data-display="email"></span>
+              <input
+                class="profile-input"
+                data-field="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+              <small class="profile-error" data-error="email"></small>
+            </div>
+            <div class="profile-field">
+              <span class="profile-label">Telefone</span>
+              <span class="profile-value" data-display="phone"></span>
+              <input
+                class="profile-input"
+                data-field="phone"
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                pattern="^\(\d{2}\) \d{5}-\d{4}$"
+                placeholder="(33) 95555-5555"
+                required
+              />
+              <small class="profile-error" data-error="phone"></small>
+            </div>
+            <div class="profile-field">
+              <span class="profile-label">Data de nascimento</span>
+              <span class="profile-value" data-display="birthDate"></span>
+              <input
+                class="profile-input"
+                data-field="birthDate"
+                name="birthDate"
+                type="date"
+                required
+              />
+              <small class="profile-error" data-error="birthDate"></small>
+            </div>
+            <div class="profile-field">
+              <span class="profile-label"
+                >CPF
+                <i class="fa-solid fa-lock" aria-label="Somente leitura" hidden></i
+              ></span>
+              <span class="profile-value" data-display="cpf"></span>
+              <input class="profile-input" data-field="cpf" name="cpf" type="text" inputmode="numeric" placeholder="Digite seu CPF" />
+              <small class="profile-error" data-error="cpf"></small>
+            </div>
+            <div class="profile-field profile-field--readonly">
+              <span class="profile-label">Status</span>
+              <span class="profile-status"
+                ><i class="fa-solid fa-circle"></i
+                ><span data-display="status"></span
+              ></span>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn-secondary" type="button" id="edit-profile-btn">
+              <i class="fa-solid fa-pen"></i> Editar dados
+            </button>
+            <div class="profile-edit-actions" hidden>
+              <button
+                class="btn-secondary"
+                type="button"
+                id="cancel-profile-btn"
+              >
+                Cancelar
+              </button>
+              <button class="btn-primary-action" type="submit">
+                <i class="fa-solid fa-check"></i> Salvar alterações
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <div
+      class="profile-toast"
+      id="profile-toast"
+      role="status"
+      aria-live="polite"
+      hidden
+    >
+      <i class="fa-solid fa-circle-check"></i
+      ><span></span>
+      <button type="button" aria-label="Fechar mensagem">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <footer class="site-footer" aria-label="Rodapé eCafe">
+      <div class="footer-inner">
+        <div class="footer-col footer-brand-col">
+          <div class="footer-brand">
+            <img
+              src="../../assets/images/footer-logo.png"
+              alt="Logo eCafe"
+              class="footer-logo-img"
+            /><span class="footer-logo-text">eCafe</span>
+          </div>
+          <p class="footer-slogan">Sabor que inspira</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 eCafe. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+
+    <script src="../../assets/js/header.js"></script>
+    <script src="../../assets/js/siteNav.js"></script>
+    <script type="module">
+      import { initAuthNav } from "../../assets/js/authNav.js";
+      initAuthNav({ loginPath: "../../login.html" });
+    </script>
+    <script type="module" src="../../assets/js/pages/profile.js"></script>
+  </body>
+</html>
