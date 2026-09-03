@@ -1,6 +1,7 @@
 import {
   ensureAuthReady,
   getAccessToken,
+  getRefreshToken,
   getSessionId,
   logout,
   refreshSession,
@@ -80,10 +81,12 @@ async function request(url, options = {}, hasRetried = false) {
 
   if (response.status === 401) {
     if (!isPublic && !hasRetried && !isAuthenticationRequest(url)) {
-      const refreshed = token ? await refreshSession(token) : false;
+      if (getRefreshToken()) {
+        const refreshed = await refreshSession(token);
 
-      if (refreshed) {
-        return request(url, options, true);
+        if (refreshed) {
+          return request(url, options, true);
+        }
       }
 
       await expireSession();

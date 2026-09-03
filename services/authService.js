@@ -39,9 +39,19 @@ function notifyAuthChanged(isLoggedIn) {
 
 function getSession() {
   try {
-    const raw =
-      localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
-    return raw ? JSON.parse(raw) : null;
+    const persistentSession = localStorage.getItem(SESSION_KEY);
+    const temporarySession = sessionStorage.getItem(SESSION_KEY);
+    const raw = persistentSession || temporarySession;
+    const session = raw ? JSON.parse(raw) : null;
+
+    // Migra sessões criadas antes da persistência padrão para que também não
+    // sejam perdidas ao fechar a aba ou o navegador.
+    if (!persistentSession && temporarySession && session?.accessToken) {
+      localStorage.setItem(SESSION_KEY, temporarySession);
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    return session;
   } catch {
     return null;
   }
@@ -58,7 +68,7 @@ function clearAuthState() {
   });
 }
 
-function saveSession(session, rememberMe = false) {
+function saveSession(session) {
   if (!session?.accessToken) {
     clearAuthState();
     notifyAuthChanged(false);
@@ -68,7 +78,9 @@ function saveSession(session, rememberMe = false) {
   const serialized = JSON.stringify(session);
   localStorage.removeItem(SESSION_KEY);
   sessionStorage.removeItem(SESSION_KEY);
-  (rememberMe ? localStorage : sessionStorage).setItem(SESSION_KEY, serialized);
+  // A credencial de acesso precisa sobreviver a uma nova aba ou ao reinício do
+  // navegador. O "Lembrar de mim" controla apenas o preenchimento do e-mail.
+  localStorage.setItem(SESSION_KEY, serialized);
 
   LEGACY_AUTH_KEYS.forEach((key) => {
     localStorage.removeItem(key);
@@ -146,6 +158,22 @@ function getTokenClaims(token) {
   } catch {
     return null;
   }
+}
+
+function getTokenExpiration(token) {
+  const expiration = Number(getTokenClaims(token)?.exp);
+  return Number.isFinite(expiration) && expiration > 0
+    ? expiration * 1000
+    : null;
+}
+
+function getSessionExpiration(accessToken, expiresIn) {
+  const tokenExpiration = getTokenExpiration(accessToken);
+  if (tokenExpiration) return tokenExpiration;
+
+  return Number.isFinite(expiresIn) && expiresIn > 0
+    ? Date.now() + expiresIn * 1000
+    : null;
 }
 
 function resolveDisplayName(session) {
@@ -272,7 +300,7 @@ async function performRefreshSession() {
   const session = getSession();
   const refreshToken = session?.refreshToken?.trim();
 
-  if (!session?.accessToken || !refreshToken) {
+  if (!refreshToken) {
     return false;
   }
 
@@ -281,7 +309,9 @@ async function performRefreshSession() {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${session.accessToken}`,
+      ...(session?.accessToken
+        ? { Authorization: `Bearer ${session.accessToken}` }
+        : {}),
     },
     body: JSON.stringify({ refreshToken }),
   }).catch(() => null);
@@ -304,16 +334,11 @@ async function performRefreshSession() {
       accessToken: data.accessToken,
       refreshToken: data.refreshToken || refreshToken,
       expiresIn: data.expiresIn,
-      expiresAt: Date.now() + data.expiresIn * 1000,
+      expiresAt: getSessionExpiration(data.accessToken, data.expiresIn),
       displayName:
         data.displayName ||
         resolveDisplayName({ ...session, accessToken: data.accessToken }),
     },
-    Boolean(localStorage.getItem(SESSION_KEY)),
-  );
-
-  console.log(
-    `[TEMP] Access token renovado com sucesso em ${new Date().toLocaleTimeString()}`,
   );
 
   return true;
@@ -450,11 +475,11 @@ async function login(email, password, rememberMe = false) {
       resolveDisplayName({ accessToken: data.accessToken, email }),
     expiresIn: data.expiresIn,
     loggedInAt: Date.now(),
-    expiresAt: Date.now() + data.expiresIn * 1000,
+    expiresAt: getSessionExpiration(data.accessToken, data.expiresIn),
   };
 
   saveRememberedEmail(normalizedEmail, rememberMe);
-  saveSession(session, rememberMe);
+  saveSession(session);
   return session;
 }
 
@@ -494,7 +519,7 @@ async function register(name, email, password) {
     displayName: data.displayName || String(name || "").trim(),
     expiresIn: data.expiresIn,
     loggedInAt: Date.now(),
-    expiresAt: Date.now() + data.expiresIn * 1000,
+    expiresAt: getSessionExpiration(data.accessToken, data.expiresIn),
   };
 
   saveSession(session);

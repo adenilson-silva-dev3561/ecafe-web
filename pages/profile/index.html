@@ -103,6 +103,7 @@
                 </button>
               </div>
             </div>
+            <a href="#favoritos" class="profile-header-favorite" aria-label="Favoritos"><i class="fa-regular fa-heart"></i></a>
             <a href="../cart.html" class="cart" aria-label="Carrinho">
               <i class="fa-solid fa-cart-shopping"></i
               ><span class="badge" hidden>0</span>
@@ -119,27 +120,30 @@
       <nav class="profile-breadcrumb" aria-label="Breadcrumb">
         <ol>
           <li><a href="../../index.html">Início</a></li>
+          <li><a href="#minha-conta">Minha conta</a></li>
           <li aria-current="page">Meu perfil</li>
         </ol>
       </nav>
 
+      <div class="profile-layout">
+        <aside class="profile-sidebar" id="minha-conta">
+          <div class="sidebar-user"><div class="sidebar-avatar"><i class="fa-solid fa-user"></i></div><button class="sidebar-avatar-edit" type="button" aria-label="Alterar foto"><i class="fa-solid fa-pen"></i></button><p>Olá, <strong data-profile-first-name>Cliente</strong>! &#128075;</p><small>Cliente desde abr/2025</small></div>
+          <nav class="profile-side-nav" aria-label="Menu da conta"><a class="is-active" href="index.html"><i class="fa-regular fa-user"></i>Meu perfil</a><a href="#pedidos"><i class="fa-solid fa-bag-shopping"></i>Meus pedidos</a><a href="#enderecos"><i class="fa-solid fa-location-dot"></i>Endereços</a><a href="#favoritos"><i class="fa-regular fa-heart"></i>Meus favoritos</a><a href="#pagamentos"><i class="fa-regular fa-credit-card"></i>Métodos de pagamento</a><a href="#notificacoes"><i class="fa-regular fa-bell"></i>Notificações <b></b></a><a href="#seguranca"><i class="fa-solid fa-shield-halved"></i>Segurança</a><button type="button" class="side-logout" id="profile-logout"><i class="fa-solid fa-right-from-bracket"></i>Sair da conta</button></nav>
+          <div class="sidebar-help"><i class="fa-solid fa-headset"></i><strong>Precisa de ajuda?</strong><span>Fale com nossa equipe.</span><a href="https://wa.me/553332215867" target="_blank" rel="noopener noreferrer">Falar com atendimento</a></div>
+        </aside>
+        <div class="profile-center">
       <section class="profile-intro">
-        <div>
+        <div class="profile-intro-content">
           <p class="profile-eyebrow">Área do cliente</p>
           <h1>Meu perfil</h1>
-          <p>Gerencie seus dados pessoais</p>
-        </div>
-        <div class="profile-intro-icon" aria-hidden="true">
-          <i class="fa-regular fa-user"></i>
+          <p>Gerencie suas informações pessoais com segurança.</p>
         </div>
       </section>
 
       <section class="profile-card" aria-labelledby="personal-data-title">
         <div class="profile-card-header">
-          <div>
-            <p class="profile-card-kicker">Cadastro</p>
-            <h2 id="personal-data-title">Dados pessoais</h2>
-          </div>
+          <div class="profile-card-title"><span class="card-title-icon"><i class="fa-regular fa-user"></i></span><div><h2 id="personal-data-title">Dados pessoais</h2><p>Gerencie suas informações pessoais</p></div></div>
+          <button class="btn-secondary" type="button" id="edit-profile-btn"><i class="fa-solid fa-pen"></i> Editar dados</button>
           <span class="profile-mode-label" id="profile-mode-label"
             >Visualização</span
           >
@@ -148,7 +152,7 @@
         <form id="profile-form" novalidate>
           <div class="profile-fields">
             <div class="profile-field profile-field--wide">
-              <span class="profile-label">Nome</span>
+              <span class="profile-label">Nome completo</span>
               <span class="profile-value" data-display="name"></span>
               <input
                 class="profile-input"
@@ -160,7 +164,7 @@
               />
               <small class="profile-error" data-error="name"></small>
             </div>
-            <div class="profile-field profile-field--wide">
+            <div class="profile-field">
               <span class="profile-label">E-mail</span>
               <span class="profile-value" data-display="email"></span>
               <input
@@ -210,18 +214,19 @@
               <small class="profile-error" data-error="cpf"></small>
             </div>
             <div class="profile-field profile-field--readonly">
-              <span class="profile-label">Status</span>
+              <span class="profile-label">Status da conta</span>
               <span class="profile-status"
                 ><i class="fa-solid fa-circle"></i
                 ><span data-display="status"></span
               ></span>
             </div>
+            <div class="profile-field profile-field--readonly">
+              <span class="profile-label">Cliente desde</span>
+              <span class="profile-value"><i class="fa-regular fa-calendar"></i> Abril de 2025</span>
+            </div>
           </div>
 
           <div class="profile-actions">
-            <button class="btn-secondary" type="button" id="edit-profile-btn">
-              <i class="fa-solid fa-pen"></i> Editar dados
-            </button>
             <div class="profile-edit-actions" hidden>
               <button
                 class="btn-secondary"
@@ -237,6 +242,13 @@
           </div>
         </form>
       </section>
+        </div>
+        <aside class="profile-right-column">
+          <section class="side-card" id="enderecos"><div class="side-card-heading"><span class="card-title-icon"><i class="fa-solid fa-location-dot"></i></span><h2>Endereço principal</h2><i class="fa-solid fa-house"></i></div><address>Av. Brasil, 1234<br />Centro - Governador Valadares/MG<br />CEP: 35010-000</address><a class="side-card-link" href="#enderecos">Gerenciar endereços <i class="fa-solid fa-arrow-right"></i></a></section>
+          <section class="side-card recent-orders" id="pedidos"><div class="side-card-heading"><span class="card-title-icon"><i class="fa-solid fa-bag-shopping"></i></span><h2>Pedidos recentes</h2><a href="#pedidos">Ver todos</a></div><a href="#pedido-1247" class="order-item"><span><strong>Pedido #1247</strong><small>12/05/2024</small></span><em class="order-delivered">Entregue</em><b>R$ 89,90</b><i class="fa-solid fa-chevron-right"></i></a><a href="#pedido-1246" class="order-item"><span><strong>Pedido #1246</strong><small>08/05/2024</small></span><em class="order-transit">Em trânsito</em><b>R$ 156,50</b><i class="fa-solid fa-chevron-right"></i></a><a href="#pedido-1245" class="order-item"><span><strong>Pedido #1245</strong><small>05/05/2024</small></span><em class="order-delivered">Entregue</em><b>R$ 72,30</b><i class="fa-solid fa-chevron-right"></i></a><a class="all-orders" href="#pedidos">Ver todos os pedidos</a></section>
+        </aside>
+      </div>
+      <section class="profile-benefits" aria-label="Benefícios eCafe"><div><i class="fa-solid fa-truck-fast"></i><span><strong>Entrega rápida</strong><small>Receba em até 24h</small></span></div><div><i class="fa-solid fa-shield-halved"></i><span><strong>Pagamento seguro</strong><small>Seus dados protegidos</small></span></div><div><i class="fa-regular fa-credit-card"></i><span><strong>Parcelamento facilitado</strong><small>Até 6x sem juros</small></span></div><div><i class="fa-solid fa-headset"></i><span><strong>Suporte dedicado</strong><small>Estamos aqui para ajudar</small></span></div></section>
     </main>
 
     <div
