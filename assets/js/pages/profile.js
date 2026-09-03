@@ -1,4 +1,4 @@
-import { ensureAuthReady } from "../../../services/authService.js";
+import { ensureAuthReady, logout } from "../../../services/authService.js";
 import {
   getCurrentCustomer,
   updateCustomerById,
@@ -41,6 +41,11 @@ function formatCpf(value) {
     : cpf;
 }
 
+function maskCpf(value) {
+  const cpf = formatCpf(value);
+  return cpf.length === 14 ? `${cpf.slice(0, 3)}.***.***-${cpf.slice(-2)}` : cpf;
+}
+
 function formatPhone(value) {
   const phone = digits(value).slice(0, 11);
   if (phone.length === 11) {
@@ -77,6 +82,10 @@ function normalizeProfile(customer) {
 }
 
 function renderProfile() {
+  const firstName = profileData.name.trim().split(/\s+/)[0] || "Cliente";
+  document.querySelectorAll("[data-profile-first-name]").forEach((element) => {
+    element.textContent = firstName;
+  });
   document.querySelectorAll("[data-display]").forEach((element) => {
     if (isLoading) {
       element.textContent = "Carregando...";
@@ -85,7 +94,7 @@ function renderProfile() {
     const field = element.dataset.display;
     let value = profileData[field];
     if (field === "birthDate") value = formatBirthDate(value);
-    if (field === "cpf") value = formatCpf(value);
+    if (field === "cpf") value = maskCpf(value);
     element.textContent = field === "status" ? value : displayValue(value);
   });
 
@@ -248,6 +257,11 @@ editButton.addEventListener("click", () => {
   draftProfile = { ...profileData };
   setEditing(true);
   form.querySelector("[data-field='name']").focus();
+});
+
+document.getElementById("profile-logout")?.addEventListener("click", async () => {
+  await logout();
+  window.location.assign("../../login.html");
 });
 
 form.querySelectorAll("[data-field]").forEach((input) => {
